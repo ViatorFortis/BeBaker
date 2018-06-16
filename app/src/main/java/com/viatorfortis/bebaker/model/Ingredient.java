@@ -16,6 +16,18 @@ public class Ingredient implements Parcelable {
     @SerializedName("quantity")
     private final float mQuantity;
 
+    public String getIngredient() {
+        return mIngredient;
+    }
+
+    public String getMeasure() {
+        return mMeasure;
+    }
+
+    public float getQuantity() {
+        return mQuantity;
+    }
+
     public Ingredient(String ingredient, String measure, float quantity) {
         mIngredient = ingredient;
         mMeasure = measure;
