@@ -15,7 +15,7 @@ public final class NetworkUtils {
 
     private static final String TAG = "NetworkUtilsLog";
 
-    public static String getRecipeListUrl()
+    public static String getRecipeListJson()
             throws IOException {
         URL url = buildRecipeListUrl();
         return getResponseFromHttpUrl(url);

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">BeBaker</string>
+
+    <string name="recipe_list_key">recipes</string>
+
+    <string name="recipe_loading_warning_toast">Warning: recipe list is empty</string>
+
+    <string name="recipe_loading_error_toast">Error: recipe list hasn\'t been loaded</string>
 </resources>
