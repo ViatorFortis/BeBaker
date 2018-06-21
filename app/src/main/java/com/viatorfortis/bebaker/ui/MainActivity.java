@@ -1,6 +1,7 @@
 package com.viatorfortis.bebaker.ui;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @SuppressLint("StaticFieldLeak")
+    @NonNull
     @Override
     public Loader onCreateLoader(int i, Bundle bundle) {
         return new AsyncTaskLoader<List<Recipe>>(this) {
@@ -76,7 +78,8 @@ public class MainActivity extends AppCompatActivity
             recipeList = (ArrayList<Recipe>) object;
 
             if (recipeList.size() > 0) {
-                ( (TextView) findViewById(R.id.tv_json) ).setText(recipeList.toString() );
+                // add items to RV adapter
+
             } else {
                 Toast.makeText(this, getString(R.string.recipe_loading_warning_toast), Toast.LENGTH_LONG).show();
             }
