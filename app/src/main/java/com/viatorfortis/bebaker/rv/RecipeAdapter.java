@@ -6,10 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.viatorfortis.bebaker.R;
 import com.viatorfortis.bebaker.model.Recipe;
-
 import java.util.ArrayList;
 
 public class RecipeAdapter
@@ -17,19 +15,13 @@ public class RecipeAdapter
 
     private ArrayList<Recipe> mRecipeList;
 
-//    private final GridItemClickListener mGridItemClickListener;
-//
-//    public interface GridItemClickListener {
-//        void onGridItemClick(int adapterPosition);
-//    }
-
-    public RecipeAdapter(ArrayList<Recipe> recipeList/*, GridItemClickListener gridItemClickListener*/) {
+    public RecipeAdapter(ArrayList<Recipe> recipeList) {
         mRecipeList = recipeList;
-        //mGridItemClickListener = gridItemClickListener;
     }
 
     public void addRecipes(ArrayList<Recipe> recipeList) {
         mRecipeList.addAll(recipeList);
+        notifyDataSetChanged();
     }
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
@@ -38,7 +30,7 @@ public class RecipeAdapter
         private RecipeViewHolder(View itemView) {
             super(itemView);
 
-            mNameTextView = itemView.findViewById(R.id.rv_recipe_list);
+            mNameTextView = itemView.findViewById(R.id.tv_name);
         }
     }
 

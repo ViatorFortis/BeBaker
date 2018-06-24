@@ -17,18 +17,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-import android.support.v4.app.LoaderManager;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-
 import com.google.gson.JsonSyntaxException;
 import com.viatorfortis.bebaker.R;
 import com.viatorfortis.bebaker.model.Recipe;
 import com.viatorfortis.bebaker.rv.RecipeAdapter;
 import com.viatorfortis.bebaker.utilities.JsonUtils;
 import com.viatorfortis.bebaker.utilities.NetworkUtils;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,12 +40,6 @@ public class RecipeListFragment extends Fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
-//        try {
-//
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(context.toString() + " must implement GridItemClickListener");
-//        }
     }
 
     @Nullable
@@ -65,10 +53,9 @@ public class RecipeListFragment extends Fragment
 
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_recipe_list);
 
-        GridLayoutManager gridLayoutManager= new GridLayoutManager (getContext(), 2);
+        GridLayoutManager gridLayoutManager= new GridLayoutManager (getContext(), 1);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(gridLayoutManager);
-        //recyclerView.setHasFixedSize(true);
 
         mRecipeAdapter = new RecipeAdapter(new ArrayList<Recipe>() );
         recyclerView.setAdapter(mRecipeAdapter);
@@ -114,9 +101,7 @@ public class RecipeListFragment extends Fragment
             recipeList = (ArrayList<Recipe>) object;
 
             if (recipeList.size() > 0) {
-                // add items to RV adapter
                 mRecipeAdapter.addRecipes(recipeList);
-
             } else {
                 Toast.makeText(getContext(), getString(R.string.recipe_loading_warning_toast), Toast.LENGTH_LONG).show();
             }
