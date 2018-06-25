@@ -15,8 +15,19 @@ public class RecipeAdapter
 
     private ArrayList<Recipe> mRecipeList;
 
-    public RecipeAdapter(ArrayList<Recipe> recipeList) {
+    private final RecipeClickListener mRecipeClickListener;
+
+    public interface RecipeClickListener {
+        void onRecipeClick(int adapterPosition);
+    }
+
+    public Recipe getRecipe(int adapterPosition) {
+        return mRecipeList.get(adapterPosition);
+    }
+
+    public RecipeAdapter(ArrayList<Recipe> recipeList, RecipeClickListener recipeClickListener) {
         mRecipeList = recipeList;
+        mRecipeClickListener = recipeClickListener;
     }
 
     public void addRecipes(ArrayList<Recipe> recipeList) {
@@ -24,13 +35,19 @@ public class RecipeAdapter
         notifyDataSetChanged();
     }
 
-    public class RecipeViewHolder extends RecyclerView.ViewHolder {
+    public class RecipeViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
         private final TextView mNameTextView;
 
         private RecipeViewHolder(View itemView) {
             super(itemView);
 
             mNameTextView = itemView.findViewById(R.id.tv_name);
+        }
+
+        @Override
+        public void onClick(View view) {
+            mRecipeClickListener.onRecipeClick(getAdapterPosition() );
         }
     }
 
