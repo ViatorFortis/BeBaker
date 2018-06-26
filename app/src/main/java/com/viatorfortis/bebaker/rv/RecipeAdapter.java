@@ -42,6 +42,7 @@ public class RecipeAdapter
         private RecipeViewHolder(View itemView) {
             super(itemView);
 
+            itemView.setOnClickListener(this);
             mNameTextView = itemView.findViewById(R.id.tv_name);
         }
 
