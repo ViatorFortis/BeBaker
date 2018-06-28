@@ -28,10 +28,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeListFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks,
-                   RecipeAdapter.RecipeClickListener {
+        implements LoaderManager.LoaderCallbacks {
 
     private static final int RECIPE_LIST_LOADER_ID = 13;
+
+
+    private RecipeAdapter.OnRecipeClickListener mActivity;
+
 
     private RecipeAdapter mRecipeAdapter;
 
@@ -41,6 +44,12 @@ public class RecipeListFragment extends Fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        try {
+            mActivity = (RecipeAdapter.OnRecipeClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement RecipeAdapter.OnRecipeClickListener");
+        }
     }
 
     @Nullable
@@ -58,7 +67,7 @@ public class RecipeListFragment extends Fragment
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        mRecipeAdapter = new RecipeAdapter(new ArrayList<Recipe>(), this);
+        mRecipeAdapter = new RecipeAdapter(new ArrayList<Recipe>(), mActivity);
         recyclerView.setAdapter(mRecipeAdapter);
 
         return rootView;
@@ -113,10 +122,5 @@ public class RecipeListFragment extends Fragment
 
     @Override
     public void onLoaderReset(Loader loader) {
-    }
-
-    @Override
-    public void onRecipeClick(int adapterPosition) {
-        Toast.makeText(getContext(), "Recipe of" + mRecipeAdapter.getRecipe(adapterPosition).getName() + "clicked", Toast.LENGTH_LONG).show();
     }
 }

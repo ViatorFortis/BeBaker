@@ -15,19 +15,15 @@ public class RecipeAdapter
 
     private ArrayList<Recipe> mRecipeList;
 
-    private final RecipeClickListener mRecipeClickListener;
+    private final OnRecipeClickListener mCallback;
 
-    public interface RecipeClickListener {
-        void onRecipeClick(int adapterPosition);
+    public interface OnRecipeClickListener {
+        void onRecipeClick(Recipe recipe);
     }
 
-    public Recipe getRecipe(int adapterPosition) {
-        return mRecipeList.get(adapterPosition);
-    }
-
-    public RecipeAdapter(ArrayList<Recipe> recipeList, RecipeClickListener recipeClickListener) {
+    public RecipeAdapter(ArrayList<Recipe> recipeList, OnRecipeClickListener callback) {
         mRecipeList = recipeList;
-        mRecipeClickListener = recipeClickListener;
+        mCallback = callback;
     }
 
     public void addRecipes(ArrayList<Recipe> recipeList) {
@@ -48,7 +44,7 @@ public class RecipeAdapter
 
         @Override
         public void onClick(View view) {
-            mRecipeClickListener.onRecipeClick(getAdapterPosition() );
+            mCallback.onRecipeClick(mRecipeList.get(getAdapterPosition() ) );
         }
     }
 
