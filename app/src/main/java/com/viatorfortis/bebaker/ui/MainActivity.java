@@ -1,5 +1,6 @@
 package com.viatorfortis.bebaker.ui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onRecipeClick(Recipe recipe) {
-        Toast.makeText(this, "Recipe of " + recipe.getName() + " clicked", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, StepListActivity.class);
+        intent.putExtra(getString(R.string.recipe_parcel_key), recipe);
+        startActivity(intent);
     }
 }

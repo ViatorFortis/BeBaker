@@ -6,4 +6,8 @@
     <string name="recipe_loading_warning_toast">Warning: recipe list is empty</string>
 
     <string name="recipe_loading_error_toast">Error: recipe list hasn\'t been loaded</string>
+
+    <string name="recipe_parcel_key">recipe</string>
+
+    <string name="get_recipe_parcel_npe">Unable to get recipe</string>
 </resources>
