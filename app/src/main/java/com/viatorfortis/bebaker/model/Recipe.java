@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Recipe
@@ -30,6 +31,7 @@ public class Recipe
         return mName;
     }
 
+
     public List<Ingredient> getIngredientList() {
         return mIngredientList;
     }
@@ -37,6 +39,7 @@ public class Recipe
     public List<Step> getStepList() {
         return mStepList;
     }
+
 
     public Recipe(int id, String name, List<Ingredient> ingredientList, List<Step> stepList) {
         mId = id;
@@ -48,7 +51,10 @@ public class Recipe
     private Recipe(Parcel parcel) {
         mId = parcel.readInt();
         mName = parcel.readString();
+
+        mIngredientList = new ArrayList<Ingredient>();
         parcel.readList(mIngredientList, Ingredient.class.getClassLoader() );
+        mStepList = new ArrayList<Step>();
         parcel.readList(mStepList, Step.class.getClassLoader() );
     }
 
