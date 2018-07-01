@@ -3,7 +3,7 @@ package com.viatorfortis.bebaker.ui;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.viatorfortis.bebaker.R;
 import com.viatorfortis.bebaker.model.Recipe;
@@ -16,6 +16,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar appBar = findViewById(R.id.tb_recipe_list);
+        setSupportActionBar(appBar);
     }
 
     @Override
