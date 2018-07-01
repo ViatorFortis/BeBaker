@@ -10,4 +10,6 @@
     <string name="recipe_parcel_key">recipe</string>
 
     <string name="get_recipe_parcel_npe">Unable to get recipe</string>
+
+    <string name="ingredient_list_label">Ingredients</string>
 </resources>

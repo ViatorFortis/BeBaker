@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 
 import com.viatorfortis.bebaker.R;
 import com.viatorfortis.bebaker.model.Recipe;
+import com.viatorfortis.bebaker.rv.RecipeDetailAdapter;
 
 public class StepListFragment extends Fragment {
 
@@ -35,7 +38,17 @@ public class StepListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_step_list, container, false);
 
-        ( (TextView) rootView.findViewById(R.id.tv_recipe_name) ).setText(mRecipe.getName() );
+        //( (TextView) rootView.findViewById(R.id.tv_recipe_name) ).setText(mRecipe.getName() );
+        RecyclerView recyclerView = rootView.findViewById(R.id.rv_step_list);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext() );
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+
+        RecipeDetailAdapter recipeDetailAdapter = new RecipeDetailAdapter(mRecipe.getStepList(), getContext() );
+        recyclerView.setAdapter(recipeDetailAdapter);
+
+        //recipeDetailAdapter.notifyDataSetChanged();
 
         return rootView;
     }

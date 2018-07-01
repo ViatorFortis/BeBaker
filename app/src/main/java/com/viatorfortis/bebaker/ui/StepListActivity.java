@@ -3,8 +3,11 @@ package com.viatorfortis.bebaker.ui;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.viatorfortis.bebaker.R;
 import com.viatorfortis.bebaker.model.Recipe;
@@ -18,7 +21,10 @@ public class StepListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_list);
 
-        //Recipe recipe;
+        Toolbar appBar = findViewById(R.id.tb_step_list);
+        setSupportActionBar(appBar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         try {
             mRecipe = getIntent().getParcelableExtra(getString(R.string.recipe_parcel_key));
@@ -29,6 +35,8 @@ public class StepListActivity extends AppCompatActivity {
         }
 
         if(savedInstanceState == null) {
+            setTitle(mRecipe.getName() );
+
             StepListFragment stepListFragment = new StepListFragment();
             stepListFragment.setRecipe(mRecipe);
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -36,5 +44,12 @@ public class StepListActivity extends AppCompatActivity {
                     .add(R.id.step_list_container, stepListFragment)
                     .commit();
         }
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            onBackPressed();
+        }
+        return true;
     }
 }
