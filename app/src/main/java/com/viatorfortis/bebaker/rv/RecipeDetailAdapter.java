@@ -24,9 +24,15 @@ public class RecipeDetailAdapter
 
     private List<Step> mStepList;
 
-    public RecipeDetailAdapter(List<Step> stepList, Context context) {
+    private final OnIngredientListClickListener mIngredientListCallback;
+
+    public interface OnIngredientListClickListener {
+        void onIngredientListClick();
+    }
+
+    public RecipeDetailAdapter(List<Step> stepList, OnIngredientListClickListener callback) {
         mStepList = stepList;
-        mContext = context;
+        mIngredientListCallback = callback;
     }
 
     @Override
@@ -43,9 +49,17 @@ public class RecipeDetailAdapter
         }
     }
 
-    public class IngredientViewHolder extends RecyclerView.ViewHolder {
+    public class IngredientViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
         public IngredientViewHolder(View itemView) {
             super(itemView);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mIngredientListCallback.onIngredientListClick();
         }
     }
 

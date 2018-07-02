@@ -14,11 +14,14 @@ import android.widget.TextView;
 
 import com.viatorfortis.bebaker.R;
 import com.viatorfortis.bebaker.model.Recipe;
+import com.viatorfortis.bebaker.rv.RecipeAdapter;
 import com.viatorfortis.bebaker.rv.RecipeDetailAdapter;
 
 public class StepListFragment extends Fragment {
 
     private Recipe mRecipe;
+
+    private RecipeDetailAdapter.OnIngredientListClickListener mActivity;
 
     public void setRecipe(Recipe recipe) {
         mRecipe = recipe;
@@ -31,6 +34,11 @@ public class StepListFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
+        try {
+            mActivity = (RecipeDetailAdapter.OnIngredientListClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement RecipeDetailAdapter.OnIngredientListClickListener");
+        }
     }
 
     @Nullable
@@ -45,7 +53,7 @@ public class StepListFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        RecipeDetailAdapter recipeDetailAdapter = new RecipeDetailAdapter(mRecipe.getStepList(), getContext() );
+        RecipeDetailAdapter recipeDetailAdapter = new RecipeDetailAdapter(mRecipe.getStepList(), mActivity );
         recyclerView.setAdapter(recipeDetailAdapter);
 
         //recipeDetailAdapter.notifyDataSetChanged();

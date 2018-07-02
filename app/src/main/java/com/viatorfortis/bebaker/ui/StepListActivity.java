@@ -6,13 +6,16 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.ListAdapter;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
 import com.viatorfortis.bebaker.R;
 import com.viatorfortis.bebaker.model.Recipe;
+import com.viatorfortis.bebaker.rv.RecipeDetailAdapter;
 
-public class StepListActivity extends AppCompatActivity {
+public class StepListActivity extends AppCompatActivity
+        implements RecipeDetailAdapter.OnIngredientListClickListener {
 
     private Recipe mRecipe;
 
@@ -51,5 +54,10 @@ public class StepListActivity extends AppCompatActivity {
             onBackPressed();
         }
         return true;
+    }
+
+    @Override
+    public void onIngredientListClick() {
+        Toast.makeText(this, "Ingredient list clicked", Toast.LENGTH_LONG).show();
     }
 }
