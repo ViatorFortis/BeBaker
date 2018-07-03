@@ -9,10 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.viatorfortis.bebaker.R;
-import com.viatorfortis.bebaker.model.Ingredient;
 import com.viatorfortis.bebaker.model.Step;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeDetailAdapter
@@ -49,9 +47,9 @@ public class RecipeDetailAdapter
         }
     }
 
-    public class IngredientViewHolder extends RecyclerView.ViewHolder
+    public class IngredientListViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
-        public IngredientViewHolder(View itemView) {
+        public IngredientListViewHolder(View itemView) {
             super(itemView);
 
             itemView.setOnClickListener(this);
@@ -87,7 +85,7 @@ public class RecipeDetailAdapter
         if (viewType == INGREDIENT_VIEW_TYPE_ID) {
             itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.viewholder_ingredient_list, parent, false);
-        viewHolder = new IngredientViewHolder(itemView);
+        viewHolder = new IngredientListViewHolder(itemView);
         } else {
             itemView = LayoutInflater.from(parent.getContext() )
                     .inflate(R.layout.viewholder_step, parent, false);

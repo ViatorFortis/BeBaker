@@ -1,5 +1,6 @@
 package com.viatorfortis.bebaker.ui;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,8 +12,11 @@ import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
 import com.viatorfortis.bebaker.R;
+import com.viatorfortis.bebaker.model.Ingredient;
 import com.viatorfortis.bebaker.model.Recipe;
 import com.viatorfortis.bebaker.rv.RecipeDetailAdapter;
+
+import java.util.ArrayList;
 
 public class StepListActivity extends AppCompatActivity
         implements RecipeDetailAdapter.OnIngredientListClickListener {
@@ -59,5 +63,9 @@ public class StepListActivity extends AppCompatActivity
     @Override
     public void onIngredientListClick() {
         Toast.makeText(this, "Ingredient list clicked", Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(this, IngredientListActivity.class);
+        intent.putExtra(getString(R.string.ingredient_list_parcel_key), (ArrayList<Ingredient>) mRecipe.getIngredientList() );
+        startActivity(intent);
     }
 }

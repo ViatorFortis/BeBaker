@@ -11,5 +11,9 @@
 
     <string name="get_recipe_parcel_npe">Unable to get recipe</string>
 
+    <string name="get_ingredient_list_parcel_npe">Unable to get ingredient list</string>
+
     <string name="ingredient_list_label">Ingredients</string>
+
+    <string name="ingredient_list_parcel_key">ingredientList</string>
 </resources>

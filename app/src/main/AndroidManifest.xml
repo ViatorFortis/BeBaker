@@ -22,6 +22,8 @@
 
         <activity android:name=".ui.StepListActivity" />
 
+        <activity android:name=".ui.IngredientListActivity" />
+
     </application>
 
 </manifest>
