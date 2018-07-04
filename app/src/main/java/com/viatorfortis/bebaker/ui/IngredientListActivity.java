@@ -35,6 +35,7 @@ public class IngredientListActivity extends AppCompatActivity {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
 
         IngredientAdapter ingredientAdapter = new IngredientAdapter(ingredientList);
         recyclerView.setAdapter(ingredientAdapter);
