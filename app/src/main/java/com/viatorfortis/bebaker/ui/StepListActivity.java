@@ -66,6 +66,7 @@ public class StepListActivity extends AppCompatActivity
 
         Intent intent = new Intent(this, IngredientListActivity.class);
         intent.putExtra(getString(R.string.ingredient_list_parcel_key), (ArrayList<Ingredient>) mRecipe.getIngredientList() );
+        intent.putExtra(getString(R.string.recipe_name_key), mRecipe.getName() );
         startActivity(intent);
     }
 }

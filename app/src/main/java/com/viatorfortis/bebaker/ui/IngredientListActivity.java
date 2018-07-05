@@ -1,23 +1,40 @@
 package com.viatorfortis.bebaker.ui;
 
+import android.support.v7.app.ActionBar;
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
+import java.util.ArrayList;
 
 import com.viatorfortis.bebaker.R;
 import com.viatorfortis.bebaker.model.Ingredient;
-import com.viatorfortis.bebaker.rv.IngredientAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class IngredientListActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_ingredient_list);
+
+        Toolbar appBar = findViewById(R.id.tb_ingredient_list);
+        setSupportActionBar(appBar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        String recipeName;
+
+        try {
+            recipeName = getIntent().getExtras().getString(getString(R.string.recipe_name_key));
+        } catch (NullPointerException e) {
+            Toast.makeText(this, R.string.get_recipe_name_npe, Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         ArrayList<Ingredient> ingredientList;
 
@@ -29,15 +46,22 @@ public class IngredientListActivity extends AppCompatActivity {
             return;
         }
 
-        setContentView(R.layout.activity_ingredient_list);
+        if (savedInstanceState == null) {
+            setTitle(getString(R.string.ingredient_list_caption, recipeName) );
 
-        RecyclerView recyclerView = findViewById(R.id.rv_ingredient_list);
+            IngredientListFragment ingredientListFragment = new IngredientListFragment();
+            ingredientListFragment.setIngredientList(ingredientList);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .add(R.id.ingredient_list_container, ingredientListFragment)
+                    .commit();
+        }
+    }
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-
-        IngredientAdapter ingredientAdapter = new IngredientAdapter(ingredientList);
-        recyclerView.setAdapter(ingredientAdapter);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            onBackPressed();
+        }
+        return true;
     }
 }

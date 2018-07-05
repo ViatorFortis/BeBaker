@@ -16,4 +16,10 @@
     <string name="ingredient_list_label">Ingredients</string>
 
     <string name="ingredient_list_parcel_key">ingredientList</string>
+
+    <string name="recipe_name_key">recipeName</string>
+
+    <string name="get_recipe_name_npe">Unable to get recipe name</string>
+
+    <string name="ingredient_list_caption">%1$s: ingredients</string>
 </resources>
