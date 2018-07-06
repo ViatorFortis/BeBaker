@@ -21,7 +21,9 @@ public class StepListFragment extends Fragment {
 
     private Recipe mRecipe;
 
-    private RecipeDetailAdapter.OnIngredientListClickListener mActivity;
+    //private RecipeDetailAdapter.OnIngredientListClickListener mActivity;
+
+    private Context mContext;
 
     public void setRecipe(Recipe recipe) {
         mRecipe = recipe;
@@ -35,10 +37,19 @@ public class StepListFragment extends Fragment {
         super.onAttach(context);
 
         try {
-            mActivity = (RecipeDetailAdapter.OnIngredientListClickListener) context;
+            //mActivity = (RecipeDetailAdapter.OnIngredientListClickListener) context;
+            RecipeDetailAdapter.OnIngredientListClickListener ingredientListCallBack = (RecipeDetailAdapter.OnIngredientListClickListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement RecipeDetailAdapter.OnIngredientListClickListener");
         }
+
+        try {
+            RecipeDetailAdapter.OnStepClickListener stepCallBack = (RecipeDetailAdapter.OnStepClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement RecipeDetailAdapter.OnIngredientListClickListener");
+        }
+
+        mContext = context;
     }
 
     @Nullable
@@ -53,7 +64,7 @@ public class StepListFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        RecipeDetailAdapter recipeDetailAdapter = new RecipeDetailAdapter(mRecipe.getStepList(), mActivity );
+        RecipeDetailAdapter recipeDetailAdapter = new RecipeDetailAdapter(mRecipe.getStepList(), mContext);
         recyclerView.setAdapter(recipeDetailAdapter);
 
         //recipeDetailAdapter.notifyDataSetChanged();

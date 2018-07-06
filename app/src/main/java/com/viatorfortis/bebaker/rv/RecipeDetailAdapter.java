@@ -28,9 +28,16 @@ public class RecipeDetailAdapter
         void onIngredientListClick();
     }
 
-    public RecipeDetailAdapter(List<Step> stepList, OnIngredientListClickListener callback) {
+    private final OnStepClickListener mStepCallback;
+
+    public interface OnStepClickListener {
+        void onStepClick(Step step);
+    }
+
+    public RecipeDetailAdapter(List<Step> stepList, Context context) {
         mStepList = stepList;
-        mIngredientListCallback = callback;
+        mIngredientListCallback = (OnIngredientListClickListener) context;
+        mStepCallback = (OnStepClickListener) context;
     }
 
     @Override
@@ -61,18 +68,25 @@ public class RecipeDetailAdapter
         }
     }
 
-    public class StepViewHolder
-            extends RecyclerView.ViewHolder {
+    public class StepViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
         private TextView mShortDescriptionTextView;
 
         public StepViewHolder(View itemView) {
             super(itemView);
 
             mShortDescriptionTextView = itemView.findViewById(R.id.tv_step_short_description);
+
+            itemView.setOnClickListener(this);
         }
 
         public void populate(Step step) {
             mShortDescriptionTextView.setText(step.getShortDescription() );
+        }
+
+        @Override
+        public void onClick(View v) {
+            mStepCallback.onStepClick(mStepList.get(getAdapterPosition() - 1) );
         }
     }
 

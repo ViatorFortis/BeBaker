@@ -14,12 +14,13 @@ import android.support.v7.widget.Toolbar;
 import com.viatorfortis.bebaker.R;
 import com.viatorfortis.bebaker.model.Ingredient;
 import com.viatorfortis.bebaker.model.Recipe;
+import com.viatorfortis.bebaker.model.Step;
 import com.viatorfortis.bebaker.rv.RecipeDetailAdapter;
 
 import java.util.ArrayList;
 
 public class StepListActivity extends AppCompatActivity
-        implements RecipeDetailAdapter.OnIngredientListClickListener {
+        implements RecipeDetailAdapter.OnIngredientListClickListener, RecipeDetailAdapter.OnStepClickListener {
 
     private Recipe mRecipe;
 
@@ -68,5 +69,11 @@ public class StepListActivity extends AppCompatActivity
         intent.putExtra(getString(R.string.ingredient_list_parcel_key), (ArrayList<Ingredient>) mRecipe.getIngredientList() );
         intent.putExtra(getString(R.string.recipe_name_key), mRecipe.getName() );
         startActivity(intent);
+    }
+
+    @Override
+    public void onStepClick(Step step) {
+
+        Toast.makeText(this, step.getShortDescription(), Toast.LENGTH_LONG).show();
     }
 }
