@@ -18,7 +18,6 @@ public class RecipeDetailAdapter
 
     private final int INGREDIENT_VIEW_TYPE_ID = 0;
     private final int STEP_VIEW_TYPE_ID = 1;
-    private Context mContext;
 
     private List<Step> mStepList;
 
