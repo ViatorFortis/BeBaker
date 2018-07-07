@@ -72,8 +72,8 @@ public class StepListActivity extends AppCompatActivity
     }
 
     @Override
-    public void onStepClick(Step step) {
-
-        Toast.makeText(this, step.getShortDescription(), Toast.LENGTH_LONG).show();
+    public void onStepClick(int stepId) {
+        String stepShortDescription = mRecipe.getStepList().get(stepId).getShortDescription();
+        Toast.makeText(this, stepShortDescription, Toast.LENGTH_LONG).show();
     }
 }

@@ -30,7 +30,7 @@ public class RecipeDetailAdapter
     private final OnStepClickListener mStepCallback;
 
     public interface OnStepClickListener {
-        void onStepClick(Step step);
+        void onStepClick(int stepId);
     }
 
     public RecipeDetailAdapter(List<Step> stepList, Context context) {
@@ -85,7 +85,7 @@ public class RecipeDetailAdapter
 
         @Override
         public void onClick(View v) {
-            mStepCallback.onStepClick(mStepList.get(getAdapterPosition() - 1) );
+            mStepCallback.onStepClick(getAdapterPosition() - 1);
         }
     }
 
