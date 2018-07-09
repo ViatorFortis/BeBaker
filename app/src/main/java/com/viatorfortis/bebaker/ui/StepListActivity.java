@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.ListAdapter;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
@@ -18,6 +17,7 @@ import com.viatorfortis.bebaker.model.Step;
 import com.viatorfortis.bebaker.rv.RecipeDetailAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StepListActivity extends AppCompatActivity
         implements RecipeDetailAdapter.OnIngredientListClickListener, RecipeDetailAdapter.OnStepClickListener {
@@ -73,7 +73,31 @@ public class StepListActivity extends AppCompatActivity
 
     @Override
     public void onStepClick(int stepId) {
-        String stepShortDescription = mRecipe.getStepList().get(stepId).getShortDescription();
-        Toast.makeText(this, stepShortDescription, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, StepDetailsActivity.class);
+
+        ArrayList<Step> stepList = (ArrayList<Step>) mRecipe.getStepList();
+
+        intent.putParcelableArrayListExtra(getString(R.string.step_list_key), stepList);
+        intent.putExtra(getString(R.string.step_id_key), stepId);
+
+        startActivity(intent);
+
+//        Intent intent = new Intent(this, StepDetailsActivity.class);
+//
+//        List<Step> stepList = mRecipe.getStepList();
+//
+//        Step step = stepList.get(stepId);
+//        intent.putExtra(getString(R.string.selected_step_key), step);
+//
+//        Step prevStep = (stepId  == 0) ? null : stepList.get(stepId - 1);
+//        intent.putExtra(getString(R.string.previous_step_key), prevStep);
+//
+//        Step nextStep = (stepId  == (stepList.size() - 1) ) ? null : stepList.get(stepId + 1);
+//        intent.putExtra(getString(R.string.next_step_key), nextStep);
+//
+//        startActivity(intent);
+
+//        String stepShortDescription = mRecipe.getStepList().get(stepId).getShortDescription();
+//        Toast.makeText(this, stepShortDescription, Toast.LENGTH_LONG).show();
     }
 }

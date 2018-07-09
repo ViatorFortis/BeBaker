@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">BeBaker</string>
 
-    <string name="recipe_list_key">recipes</string>
-
     <string name="recipe_loading_warning_toast">Warning: recipe list is empty</string>
 
     <string name="recipe_loading_error_toast">Error: recipe list hasn\'t been loaded</string>
@@ -22,4 +20,14 @@
     <string name="get_recipe_name_npe">Unable to get recipe name</string>
 
     <string name="ingredient_list_caption">%1$s: ingredients</string>
+
+    <string name="get_step_list_parcel_npe">Unable to get step list</string>
+
+    <string name="previous_button_caption">previous</string>
+
+    <string name="next_button_caption">next</string>
+
+    <string name="step_list_key">stepList</string>
+
+    <string name="step_id_key">stepId</string>
 </resources>
