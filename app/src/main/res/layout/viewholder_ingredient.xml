@@ -9,7 +9,6 @@
     android:layout_margin="8dp" >
 
     <LinearLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
@@ -33,7 +32,7 @@
             android:padding="8dp"
             android:theme="@style/AppTheme"
             android:background="?attr/colorPrimaryDark"
-            app:titleTextColor="@color/textColorPrimary"
+            android:textColor="@color/textColorPrimary"
             tools:text="Quantity" />
 
         <TextView
