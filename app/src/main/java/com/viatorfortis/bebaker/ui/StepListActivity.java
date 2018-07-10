@@ -15,9 +15,7 @@ import com.viatorfortis.bebaker.model.Ingredient;
 import com.viatorfortis.bebaker.model.Recipe;
 import com.viatorfortis.bebaker.model.Step;
 import com.viatorfortis.bebaker.rv.RecipeDetailAdapter;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class StepListActivity extends AppCompatActivity
         implements RecipeDetailAdapter.OnIngredientListClickListener, RecipeDetailAdapter.OnStepClickListener {

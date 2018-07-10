@@ -10,11 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.viatorfortis.bebaker.R;
 import com.viatorfortis.bebaker.model.Recipe;
-import com.viatorfortis.bebaker.rv.RecipeAdapter;
 import com.viatorfortis.bebaker.rv.RecipeDetailAdapter;
 
 public class StepListFragment extends Fragment {
