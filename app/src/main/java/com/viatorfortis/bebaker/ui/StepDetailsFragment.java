@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -21,9 +22,9 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.ui.PlayerView;
 
 import com.google.android.exoplayer2.upstream.DataSource;
-//import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 import com.viatorfortis.bebaker.R;
 import com.viatorfortis.bebaker.model.Step;
 
@@ -36,7 +37,7 @@ public class StepDetailsFragment extends Fragment {
     private ArrayList<Step> mStepList;
     private int mStepId;
 
-    private TextView mStepDescriptionTextView;
+    private TextView mDescriptionTextView;
     private Button mPrevStepButton;
     private Button mNextStepButton;
 
@@ -45,7 +46,9 @@ public class StepDetailsFragment extends Fragment {
     private DataSource.Factory mMediaDataSourceFactory;
     private MediaSource mMediaSource;
 
+    private ImageView mImageView;
 
+    private boolean mVideoProvided;
 
     public void setStep(ArrayList<Step> stepList, int stepId) {
         mStepList = stepList;
@@ -63,21 +66,29 @@ public class StepDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_step_details, container, false);
 
-        mStepDescriptionTextView = rootView.findViewById(R.id.tv_step_description);
+        mDescriptionTextView = rootView.findViewById(R.id.tv_step_description);
         mPrevStepButton = rootView.findViewById(R.id.b_prev_step);
         mNextStepButton = rootView.findViewById(R.id.b_next_step);
 
         mPlayerView = rootView.findViewById(R.id.pv_step_video);
+        mImageView = rootView.findViewById(R.id.iv_step_image);
+
+        String videoUrl = mStepList.get(mStepId).getVideoUrl();
+
+        if (videoUrl == null
+                || videoUrl.isEmpty() ) {
+            mVideoProvided = false;
+            mPlayerView.setVisibility(View.GONE);
+        } else {
+            mVideoProvided = true;
+            mImageView.setVisibility(View.GONE);
+        }
 
         if (savedInstanceState == null) {
             populateUI();
             setButtonClickListeners();
-
-            //mMediaDataSourceFactory = new DefaultDataSourceFactory(getActivity(), Util.getUserAgent(getActivity(), null) );
-
         }
 //        else {
 //            ;
@@ -105,8 +116,64 @@ public class StepDetailsFragment extends Fragment {
         });
     }
 
+
+    private boolean checkVideoProvided (String videoUrl) {
+        return !(videoUrl == null
+                    || videoUrl.isEmpty() );
+    }
+
+    private void setMediaViewsVisibility(boolean videoProvided) {
+        if (videoProvided) {
+            mPlayerView.setVisibility(View.VISIBLE);
+            mImageView.setVisibility(View.GONE);
+        } else {
+            mPlayerView.setVisibility(View.GONE);
+            mImageView.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void populateUI() {
-        mStepDescriptionTextView.setText(mStepList.get(mStepId).getDescription() );
+        Step step = mStepList.get(mStepId);
+
+        mDescriptionTextView.setText(step.getDescription() );
+
+        mVideoProvided = checkVideoProvided(step.getVideoUrl() );
+
+        setMediaViewsVisibility(mVideoProvided);
+
+//        String videoUrl = mStepList.get(mStepId).getVideoUrl();
+//
+//        if (videoUrl == null
+//                || videoUrl.isEmpty() ) {
+//            mVideoProvided = false;
+//            mPlayerView.setVisibility(View.GONE);
+//            mImageView.setVisibility(View.VISIBLE);
+//        } else {
+//            mVideoProvided = true;
+//            mPlayerView.setVisibility(View.VISIBLE);
+//            mImageView.setVisibility(View.GONE);
+//        }
+
+        if (!mVideoProvided) {
+            String thumbnailUrl = mStepList.get(mStepId).getThumbnailUrl();
+
+            if(thumbnailUrl.isEmpty() ) {
+                mImageView.setImageResource(R.drawable.img_labeled_oven);
+            } else {
+                Picasso.with(getActivity())
+                        .load(Uri.parse(thumbnailUrl) )
+                        .placeholder(R.drawable.img_labeled_loading)
+                        .error(R.drawable.img_labeled_oven)
+                        .into(mImageView);
+            }
+        } else {
+            if (mPlayer == null) {
+                initializePlayer();
+            } else {
+                String videoUrl = mStepList.get(mStepId).getVideoUrl();
+                preparePlayer(videoUrl);
+            }
+        }
 
         if (mStepId == 0) {
             mPrevStepButton.setVisibility(View.GONE);
@@ -131,8 +198,12 @@ public class StepDetailsFragment extends Fragment {
         mPlayerView.setPlayer(mPlayer);
 
         String videoUrl = mStepList.get(mStepId).getVideoUrl();
+        preparePlayer(videoUrl);
+    }
+
+    private void preparePlayer(String videoUrl) {
+        mPlayer.setPlayWhenReady(false);
         mMediaSource = buildMediaSource(Uri.parse(videoUrl) );
-        //mMediaSource = buildMediaSource(Uri.parse("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4") );
         mPlayer.prepare(mMediaSource, true, false);
     }
 
@@ -164,7 +235,8 @@ public class StepDetailsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (Util.SDK_INT > 23) {
+        if (mVideoProvided
+                && Util.SDK_INT > 23) {
             initializePlayer();
         }
     }
@@ -173,7 +245,8 @@ public class StepDetailsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         hideSystemUi();
-        if ((Util.SDK_INT <= 23 || mPlayer == null)) {
+        if (mVideoProvided
+                && (Util.SDK_INT <= 23 || mPlayer == null) ) {
             initializePlayer();
         }
     }
@@ -181,7 +254,8 @@ public class StepDetailsFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (Util.SDK_INT <= 23) {
+        if (mVideoProvided
+                && Util.SDK_INT <= 23) {
             releasePlayer();
         }
     }
@@ -189,7 +263,8 @@ public class StepDetailsFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (Util.SDK_INT > 23) {
+        if (mVideoProvided
+                && Util.SDK_INT > 23) {
             releasePlayer();
         }
     }
