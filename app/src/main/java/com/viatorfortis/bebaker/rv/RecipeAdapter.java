@@ -66,5 +66,9 @@ public class RecipeAdapter
     public int getItemCount() {
         return mRecipeList.size();
     }
+
+    public ArrayList<Recipe> getRecipeList() {
+        return mRecipeList;
+    }
 }
 

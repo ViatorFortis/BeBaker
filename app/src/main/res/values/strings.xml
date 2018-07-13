@@ -32,4 +32,6 @@
     <string name="step_list_key">stepList</string>
 
     <string name="step_id_key">stepId</string>
+
+    <string name="recipe_list_parcel_key">recipeList</string>
 </resources>

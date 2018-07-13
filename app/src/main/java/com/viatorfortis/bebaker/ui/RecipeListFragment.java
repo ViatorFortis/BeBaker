@@ -58,17 +58,26 @@ public class RecipeListFragment extends Fragment
 
         final View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
-        LoaderManager loaderManager = getLoaderManager();
-        loaderManager.restartLoader(RECIPE_LIST_LOADER_ID, new Bundle(), this).forceLoad();
-
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_recipe_list);
 
         GridLayoutManager gridLayoutManager= new GridLayoutManager (getContext(), 1);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        mRecipeAdapter = new RecipeAdapter(new ArrayList<Recipe>(), mActivity);
+        ArrayList<Recipe> recipeList = new ArrayList<Recipe>();
+        mRecipeAdapter = new RecipeAdapter(recipeList, mActivity);
         recyclerView.setAdapter(mRecipeAdapter);
+
+        final String RECIPE_LIST_PARCEL_KEY = getString(R.string.recipe_list_parcel_key);
+
+        if (savedInstanceState == null
+                || !savedInstanceState.containsKey(RECIPE_LIST_PARCEL_KEY) ) {
+            LoaderManager loaderManager = getLoaderManager();
+            loaderManager.restartLoader(RECIPE_LIST_LOADER_ID, new Bundle(), this).forceLoad();
+        } else {
+            ArrayList<Recipe> savedRecipeList = savedInstanceState.getParcelableArrayList(RECIPE_LIST_PARCEL_KEY);
+            mRecipeAdapter.addRecipes(savedRecipeList);
+        }
 
         return rootView;
     }
@@ -122,5 +131,12 @@ public class RecipeListFragment extends Fragment
 
     @Override
     public void onLoaderReset(Loader loader) {
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelableArrayList(getString(R.string.recipe_list_parcel_key), mRecipeAdapter.getRecipeList() );
     }
 }
