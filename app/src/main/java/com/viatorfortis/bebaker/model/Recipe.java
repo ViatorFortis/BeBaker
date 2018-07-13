@@ -21,7 +21,7 @@ public class Recipe
     private List<Ingredient> mIngredientList;
 
     @SerializedName("steps")
-    private List<Step> mStepList;
+    private ArrayList<Step> mStepList;
 
     public int getId() {
         return mId;
@@ -36,12 +36,12 @@ public class Recipe
         return mIngredientList;
     }
 
-    public List<Step> getStepList() {
+    public ArrayList<Step> getStepList() {
         return mStepList;
     }
 
 
-    public Recipe(int id, String name, List<Ingredient> ingredientList, List<Step> stepList) {
+    public Recipe(int id, String name, List<Ingredient> ingredientList, ArrayList<Step> stepList) {
         mId = id;
         mName = name;
         mIngredientList = ingredientList;

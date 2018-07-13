@@ -31,7 +31,7 @@ public class StepDetailsActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         try {
-            mStepList = getIntent().getParcelableArrayListExtra(getString(R.string.step_list_key) );
+            mStepList = getIntent().getParcelableArrayListExtra(getString(R.string.step_list_parcel_key) );
         } catch (NullPointerException e) {
             Toast.makeText(this, getString(R.string.get_step_list_parcel_npe), Toast.LENGTH_LONG).show();
             finish();

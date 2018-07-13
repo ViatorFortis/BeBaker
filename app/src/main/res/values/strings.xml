@@ -29,7 +29,7 @@
 
     <string name="step_image_content_description">Recipe step image is absent or still loading</string>
 
-    <string name="step_list_key">stepList</string>
+    <string name="step_list_parcel_key">stepList</string>
 
     <string name="step_id_key">stepId</string>
 

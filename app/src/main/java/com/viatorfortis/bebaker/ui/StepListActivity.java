@@ -40,7 +40,7 @@ public class StepListActivity extends AppCompatActivity
             return;
         }
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             setTitle(mRecipe.getName() );
 
             StepListFragment stepListFragment = new StepListFragment();
@@ -49,6 +49,11 @@ public class StepListActivity extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .add(R.id.step_list_container, stepListFragment)
                     .commit();
+        } else {
+            final String RECIPE_NAME_KEY = getString(R.string.recipe_name_key);
+            if (savedInstanceState.containsKey(RECIPE_NAME_KEY) ) {
+                setTitle(savedInstanceState.getString(RECIPE_NAME_KEY) );
+            }
         }
     }
 
@@ -75,7 +80,7 @@ public class StepListActivity extends AppCompatActivity
 
         ArrayList<Step> stepList = (ArrayList<Step>) mRecipe.getStepList();
 
-        intent.putParcelableArrayListExtra(getString(R.string.step_list_key), stepList);
+        intent.putParcelableArrayListExtra(getString(R.string.step_list_parcel_key), stepList);
         intent.putExtra(getString(R.string.step_id_key), stepId);
 
         startActivity(intent);
@@ -97,5 +102,12 @@ public class StepListActivity extends AppCompatActivity
 
 //        String stepShortDescription = mRecipe.getStepList().get(stepId).getShortDescription();
 //        Toast.makeText(this, stepShortDescription, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString(getString(R.string.recipe_name_key), mRecipe.getName() );
     }
 }

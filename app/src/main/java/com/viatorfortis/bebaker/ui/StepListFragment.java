@@ -13,7 +13,10 @@ import android.view.ViewGroup;
 
 import com.viatorfortis.bebaker.R;
 import com.viatorfortis.bebaker.model.Recipe;
+import com.viatorfortis.bebaker.model.Step;
 import com.viatorfortis.bebaker.rv.RecipeDetailAdapter;
+
+import java.util.ArrayList;
 
 public class StepListFragment extends Fragment {
 
@@ -22,6 +25,8 @@ public class StepListFragment extends Fragment {
     //private RecipeDetailAdapter.OnIngredientListClickListener mActivity;
 
     private Context mContext;
+
+    private RecipeDetailAdapter mRecipeDetailAdapter;
 
     public void setRecipe(Recipe recipe) {
         mRecipe = recipe;
@@ -62,11 +67,30 @@ public class StepListFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        RecipeDetailAdapter recipeDetailAdapter = new RecipeDetailAdapter(mRecipe.getStepList(), mContext);
-        recyclerView.setAdapter(recipeDetailAdapter);
+        final String STEP_LIST_PARCEL_KEY = getString(R.string.step_list_parcel_key);
+
+        ArrayList<Step> stepList;
+
+        if (savedInstanceState == null
+                || !savedInstanceState.containsKey(STEP_LIST_PARCEL_KEY) ) {
+            stepList = mRecipe.getStepList();
+        } else {
+            ArrayList<Step> savedStepList = savedInstanceState.getParcelableArrayList(STEP_LIST_PARCEL_KEY);
+            stepList = savedStepList;
+        }
+
+        mRecipeDetailAdapter = new RecipeDetailAdapter(stepList, mContext);
+        recyclerView.setAdapter(mRecipeDetailAdapter);
 
         //recipeDetailAdapter.notifyDataSetChanged();
 
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelableArrayList(getString(R.string.step_list_parcel_key), mRecipeDetailAdapter.getStepList() );
     }
 }

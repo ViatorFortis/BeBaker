@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import com.viatorfortis.bebaker.R;
 import com.viatorfortis.bebaker.model.Step;
-
-import java.util.List;
 
 public class RecipeDetailAdapter
         extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -19,7 +19,7 @@ public class RecipeDetailAdapter
     private final int INGREDIENT_VIEW_TYPE_ID = 0;
     private final int STEP_VIEW_TYPE_ID = 1;
 
-    private List<Step> mStepList;
+    private ArrayList<Step> mStepList;
 
     private final OnIngredientListClickListener mIngredientListCallback;
 
@@ -33,10 +33,14 @@ public class RecipeDetailAdapter
         void onStepClick(int stepId);
     }
 
-    public RecipeDetailAdapter(List<Step> stepList, Context context) {
+    public RecipeDetailAdapter(ArrayList<Step> stepList, Context context) {
         mStepList = stepList;
         mIngredientListCallback = (OnIngredientListClickListener) context;
         mStepCallback = (OnStepClickListener) context;
+    }
+
+    public ArrayList<Step> getStepList() {
+        return mStepList;
     }
 
     @Override
