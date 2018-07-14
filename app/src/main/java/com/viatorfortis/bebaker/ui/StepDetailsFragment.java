@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +76,17 @@ public class StepDetailsFragment extends Fragment {
         mPlayerView = rootView.findViewById(R.id.pv_step_video);
         mImageView = rootView.findViewById(R.id.iv_step_image);
 
+        final String STEP_LIST_PARCEL_KEY = getString(R.string.step_list_parcel_key),
+                     STEP_ID_KEY = getString(R.string.step_id_key);
+
+        if (savedInstanceState != null
+                && savedInstanceState.containsKey(STEP_LIST_PARCEL_KEY)
+                && savedInstanceState.containsKey(STEP_ID_KEY) ) {
+            ArrayList<Step> savedStepList = savedInstanceState.getParcelableArrayList(STEP_LIST_PARCEL_KEY);
+            mStepList = savedStepList;
+            mStepId = savedInstanceState.getInt(STEP_ID_KEY);
+        }
+
         String videoUrl = mStepList.get(mStepId).getVideoUrl();
 
         if (videoUrl == null
@@ -86,13 +98,8 @@ public class StepDetailsFragment extends Fragment {
             mImageView.setVisibility(View.GONE);
         }
 
-        if (savedInstanceState == null) {
-            populateUI();
-            setButtonClickListeners();
-        }
-//        else {
-//            ;
-//        }
+        populateUI();
+        setButtonClickListeners();
 
         return rootView;
     }
@@ -267,5 +274,13 @@ public class StepDetailsFragment extends Fragment {
                 && Util.SDK_INT > 23) {
             releasePlayer();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelableArrayList(getString(R.string.step_list_parcel_key), mStepList);
+        outState.putInt(getString(R.string.step_id_key), mStepId);
     }
 }
