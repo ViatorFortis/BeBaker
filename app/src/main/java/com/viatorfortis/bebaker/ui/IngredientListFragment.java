@@ -33,6 +33,14 @@ public class IngredientListFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
+        final String INGREDIENT_LIST_PARCEL_KEY = getString(R.string.ingredient_list_parcel_key);
+
+        if (savedInstanceState != null
+                && savedInstanceState.containsKey(INGREDIENT_LIST_PARCEL_KEY) ) {
+            ArrayList<Ingredient> savedIngredientList = savedInstanceState.getParcelableArrayList(INGREDIENT_LIST_PARCEL_KEY);
+            mIngredientList = savedIngredientList;
+        }
+
         IngredientAdapter ingredientAdapter = new IngredientAdapter(mIngredientList);
         recyclerView.setAdapter(ingredientAdapter);
 
@@ -41,5 +49,12 @@ public class IngredientListFragment extends Fragment {
 
     public void setIngredientList(ArrayList<Ingredient> ingredientList) {
         mIngredientList = ingredientList;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelableArrayList(getString(R.string.ingredient_list_parcel_key), mIngredientList);
     }
 }
