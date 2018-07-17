@@ -50,7 +50,7 @@ public class IngredientListActivity extends AppCompatActivity {
             setTitle(getString(R.string.ingredient_list_caption, recipeName) );
 
             IngredientListFragment ingredientListFragment = new IngredientListFragment();
-            ingredientListFragment.setIngredientList(ingredientList);
+            ingredientListFragment.setRecipeInfo(recipeName, ingredientList);
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .add(R.id.ingredient_list_container, ingredientListFragment)
