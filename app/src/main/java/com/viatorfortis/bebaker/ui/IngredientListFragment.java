@@ -22,8 +22,7 @@ import com.viatorfortis.bebaker.model.Ingredient;
 import com.viatorfortis.bebaker.rv.IngredientAdapter;
 
 
-public class IngredientListFragment extends Fragment
-        implements View.OnClickListener {
+public class IngredientListFragment extends Fragment {
 
     private String mRecipeName;
     private ArrayList<Ingredient> mIngredientList;
@@ -38,6 +37,20 @@ public class IngredientListFragment extends Fragment
         View rootView = inflater.inflate(R.layout.fragment_ingredient_list, container, false);
 
         mLoadListToWidgetButton = rootView.findViewById(R.id.btn_load_list_to_widget);
+        mLoadListToWidgetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext() );
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                editor.putString(getString(R.string.widget_recipe_name_pref_key), mRecipeName);
+
+                Gson gson = new Gson();
+                editor.putString(getString(R.string.widget_ingredient_list_pref_key), gson.toJson(mIngredientList) );
+
+                editor.commit();
+            }
+        });
 
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_ingredient_list);
 
@@ -69,20 +82,5 @@ public class IngredientListFragment extends Fragment
         super.onSaveInstanceState(outState);
 
         outState.putParcelableArrayList(getString(R.string.ingredient_list_parcel_key), mIngredientList);
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view == mLoadListToWidgetButton) {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext() );
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            editor.putString(getString(R.string.widget_recipe_name_pref_key), mRecipeName);
-
-            Gson gson = new Gson();
-            editor.putString(getString(R.string.widget_ingredient_list_pref_key), gson.toJson(mIngredientList) );
-
-            editor.commit();
-        }
     }
 }
