@@ -1,6 +1,9 @@
 package com.viatorfortis.bebaker.ui;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -13,6 +16,7 @@ import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -20,6 +24,7 @@ import com.google.gson.Gson;
 import com.viatorfortis.bebaker.R;
 import com.viatorfortis.bebaker.model.Ingredient;
 import com.viatorfortis.bebaker.rv.IngredientAdapter;
+import com.viatorfortis.bebaker.widget.IngredientListWidget;
 
 
 public class IngredientListFragment extends Fragment {
@@ -40,7 +45,9 @@ public class IngredientListFragment extends Fragment {
         mLoadListToWidgetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext() );
+                Context context = getContext();
+
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 editor.putString(getString(R.string.widget_recipe_name_pref_key), mRecipeName);
@@ -49,6 +56,16 @@ public class IngredientListFragment extends Fragment {
                 editor.putString(getString(R.string.widget_ingredient_list_pref_key), gson.toJson(mIngredientList) );
 
                 editor.commit();
+
+                Intent updateWidgetIntent = new Intent(context, IngredientListWidget.class);
+                updateWidgetIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+
+                int widgetIdArray[] = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, IngredientListWidget.class) );
+                updateWidgetIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIdArray);
+
+                context.sendBroadcast(updateWidgetIntent);
+
+                Toast.makeText(context, getString(R.string.ingredient_list_loaded_to_widget_toast, mRecipeName), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -62,8 +79,7 @@ public class IngredientListFragment extends Fragment {
 
         if (savedInstanceState != null
                 && savedInstanceState.containsKey(INGREDIENT_LIST_PARCEL_KEY) ) {
-            ArrayList<Ingredient> savedIngredientList = savedInstanceState.getParcelableArrayList(INGREDIENT_LIST_PARCEL_KEY);
-            mIngredientList = savedIngredientList;
+            mIngredientList = savedInstanceState.getParcelableArrayList(INGREDIENT_LIST_PARCEL_KEY);
         }
 
         IngredientAdapter ingredientAdapter = new IngredientAdapter(mIngredientList);

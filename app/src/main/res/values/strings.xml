@@ -19,7 +19,7 @@
 
     <string name="get_recipe_name_npe">Unable to get recipe name</string>
 
-    <string name="ingredient_list_caption">%1$s: ingredients</string>
+    <string name="ingredient_list_caption">%1$s ingredients</string>
 
     <string name="get_step_list_parcel_npe">Unable to get step list</string>
 
@@ -34,12 +34,14 @@
     <string name="step_id_key">stepId</string>
 
     <string name="recipe_list_parcel_key">recipeList</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
+
+    <string name="widget_recipe_name_content_description">Widget recipe name</string>
 
     <string name="load_to_widget_button_caption">Load list to widget</string>
 
     <string name="widget_recipe_name_pref_key">widgetRecipeNamePrefKey</string>
 
     <string name="widget_ingredient_list_pref_key">widgetIngredientListPrefKey</string>
+
+    <string name="ingredient_list_loaded_to_widget_toast">%1$s ingredient list has been loaded to widget</string>
 </resources>
