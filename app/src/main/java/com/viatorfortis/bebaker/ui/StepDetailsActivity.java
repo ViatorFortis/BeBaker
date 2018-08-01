@@ -45,7 +45,7 @@ public class StepDetailsActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             StepDetailsFragment stepDetailsFragment = new StepDetailsFragment();
-            stepDetailsFragment.setStep(mStepList, mStepId);
+            stepDetailsFragment.setStep(mStepList, mStepId, true);
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .add(R.id.step_details_container, stepDetailsFragment)

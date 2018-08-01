@@ -22,6 +22,8 @@ public class StepListFragment extends Fragment {
 
     private Recipe mRecipe;
 
+    private boolean mHighlighCurrentStep;
+
     //private RecipeDetailAdapter.OnIngredientListClickListener mActivity;
 
     private Context mContext;
@@ -30,6 +32,10 @@ public class StepListFragment extends Fragment {
 
     public void setRecipe(Recipe recipe) {
         mRecipe = recipe;
+    }
+
+    public void highlighCurrentStep(boolean highlight) {
+        mHighlighCurrentStep = highlight;
     }
 
     public StepListFragment() {
@@ -79,7 +85,7 @@ public class StepListFragment extends Fragment {
             stepList = savedStepList;
         }
 
-        mRecipeDetailAdapter = new RecipeDetailAdapter(stepList, mContext);
+        mRecipeDetailAdapter = new RecipeDetailAdapter(stepList, mContext, mHighlighCurrentStep);
         recyclerView.setAdapter(mRecipeDetailAdapter);
 
         //recipeDetailAdapter.notifyDataSetChanged();

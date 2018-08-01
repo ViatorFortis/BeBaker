@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tb_step_list"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+
+        app:layout_constraintTop_toTopOf="parent"
+
+        android:theme="@style/AppTheme"
+        android:background="?attr/colorPrimaryDark"
+        app:titleTextColor="@color/textColorPrimary"
+        android:elevation="4dp"
+        android:textSize="16sp" />
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/step_list_container"
+        android:layout_width="250dp"
+        android:layout_height="0dp"
+        android:scaleType="centerInside"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_step_list"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <View
+        android:id="@+id/v_vertical_divider"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintStart_toEndOf="@id/step_list_container"
+        app:layout_constraintTop_toBottomOf="@+id/tb_step_list"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:background="@android:color/darker_gray" />
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/step_details_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerInside"
+
+        app:layout_constraintStart_toEndOf="@+id/v_vertical_divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_step_list"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.viatorfortis.bebaker.rv;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,7 +20,13 @@ public class RecipeDetailAdapter
     private final int INGREDIENT_VIEW_TYPE_ID = 0;
     private final int STEP_VIEW_TYPE_ID = 1;
 
+    private int mCurrentStepNumber = 1;
+
     private ArrayList<Step> mStepList;
+
+    private RecyclerView mRecyclerView;
+
+    private boolean mHighlightSelectedStepViewholder;
 
     private final OnIngredientListClickListener mIngredientListCallback;
 
@@ -30,13 +37,21 @@ public class RecipeDetailAdapter
     private final OnStepClickListener mStepCallback;
 
     public interface OnStepClickListener {
-        void onStepClick(int stepId);
+        void onStepClick(int stepId/*, View view*/);
     }
 
-    public RecipeDetailAdapter(ArrayList<Step> stepList, Context context) {
+    public RecipeDetailAdapter(ArrayList<Step> stepList, Context context, boolean highlightSelectedViewholder) {
         mStepList = stepList;
+        mHighlightSelectedStepViewholder = highlightSelectedViewholder;
         mIngredientListCallback = (OnIngredientListClickListener) context;
         mStepCallback = (OnStepClickListener) context;
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+
+        mRecyclerView = recyclerView;
     }
 
     public ArrayList<Step> getStepList() {
@@ -89,7 +104,32 @@ public class RecipeDetailAdapter
 
         @Override
         public void onClick(View v) {
-            mStepCallback.onStepClick(getAdapterPosition() - 1);
+
+            if (mHighlightSelectedStepViewholder) {
+                View view = mRecyclerView.getLayoutManager().findViewByPosition(mCurrentStepNumber);
+                deemphasizeViewHolder(view);
+
+                mCurrentStepNumber = getAdapterPosition();
+
+                view = mRecyclerView.getLayoutManager().findViewByPosition(mCurrentStepNumber);
+                highlightViewHolder(view);
+            }
+
+            mStepCallback.onStepClick(getAdapterPosition() - 1/*, v*/);
+        }
+
+        private void deemphasizeViewHolder(View view) {
+            view.setBackgroundResource(R.color.cardview_light_background);
+            TextView textView = view.findViewById(R.id.tv_step_short_description);
+            textView.setTextColor(0x7F040028);
+            //textView.setTextColor(R.color.cardview_shadow_end_color);
+            //textView.setTextColor( ( (Context) mStepCallback).getResources().getColor(R.color.cardview_shadow_end_color) );
+        }
+
+        private void highlightViewHolder(View view) {
+            view.setBackgroundResource(R.color.colorPrimaryDark);
+            TextView textView = view.findViewById(R.id.tv_step_short_description);
+            textView.setTextColor(Color.WHITE);
         }
     }
 
@@ -116,6 +156,16 @@ public class RecipeDetailAdapter
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewholder, int position) {
         if(viewholder instanceof StepViewHolder) {
             ( (StepViewHolder) viewholder).populate(mStepList.get(position - 1) );
+        }
+
+        if (mHighlightSelectedStepViewholder) {
+            if (position == mCurrentStepNumber) {
+                View view = viewholder.itemView;
+
+                view.setBackgroundResource(R.color.colorPrimaryDark);
+                TextView textView = view.findViewById(R.id.tv_step_short_description);
+                textView.setTextColor(Color.WHITE);
+            }
         }
     }
 }

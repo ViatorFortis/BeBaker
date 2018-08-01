@@ -1,12 +1,20 @@
 package com.viatorfortis.bebaker.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
@@ -21,6 +29,7 @@ public class StepListActivity extends AppCompatActivity
         implements RecipeDetailAdapter.OnIngredientListClickListener, RecipeDetailAdapter.OnStepClickListener {
 
     private Recipe mRecipe;
+    private boolean mTabletMode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,12 +52,25 @@ public class StepListActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             setTitle(mRecipe.getName() );
 
+            mTabletMode = (findViewById(R.id.step_details_container) != null);
+
             StepListFragment stepListFragment = new StepListFragment();
             stepListFragment.setRecipe(mRecipe);
+            stepListFragment.highlighCurrentStep(mTabletMode);
+
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .add(R.id.step_list_container, stepListFragment)
                     .commit();
+
+            if (mTabletMode) {
+                StepDetailsFragment stepDetailsFragment = new StepDetailsFragment();
+                stepDetailsFragment.setStep(mRecipe.getStepList(), 0, false);
+                fragmentManager.beginTransaction()
+                        .add(R.id.step_details_container, stepDetailsFragment)
+                        .commit();
+            }
+
         } else {
             final String RECIPE_NAME_KEY = getString(R.string.recipe_name_key);
             if (savedInstanceState.containsKey(RECIPE_NAME_KEY) ) {
@@ -75,15 +97,49 @@ public class StepListActivity extends AppCompatActivity
     }
 
     @Override
-    public void onStepClick(int stepId) {
-        Intent intent = new Intent(this, StepDetailsActivity.class);
+    public void onStepClick(int stepId/*, View view*/) {
 
-        ArrayList<Step> stepList = (ArrayList<Step>) mRecipe.getStepList();
+        if (mTabletMode) {
 
-        intent.putParcelableArrayListExtra(getString(R.string.step_list_parcel_key), stepList);
-        intent.putExtra(getString(R.string.step_id_key), stepId);
+            //CardView cardView = view.findViewById(R.id.cv_step_list);
 
-        startActivity(intent);
+            /*
+            ShapeDrawable redBorderDrawable = new ShapeDrawable();
+            redBorderDrawable.setShape(new RectShape() );
+            redBorderDrawable.getPaint().setColor(getResources().getColor(R.color.colorPrimaryDark) );
+            redBorderDrawable.getPaint().setStrokeWidth(10f);
+            redBorderDrawable.getPaint().setStyle(Paint.Style.STROKE);
+
+            TextView textView = view.findViewById(R.id.tv_step_short_description);
+            textView.setBackground(redBorderDrawable);
+            */
+
+
+            // USE THIS TO HIGHLIGHT CURRENT STEP
+//            view.setBackgroundResource(R.color.colorPrimaryDark);
+//            TextView textView = view.findViewById(R.id.tv_step_short_description);
+//            textView.setTextColor(Color.WHITE);
+
+
+            StepDetailsFragment stepDetailsFragment = new StepDetailsFragment();
+            stepDetailsFragment.setStep(mRecipe.getStepList(), stepId, false);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+
+                    .replace(R.id.step_details_container, stepDetailsFragment)
+
+                    //.addToBackStack(null)
+                    .commit();
+        } else {
+            Intent intent = new Intent(this, StepDetailsActivity.class);
+
+            ArrayList<Step> stepList = (ArrayList<Step>) mRecipe.getStepList();
+
+            intent.putParcelableArrayListExtra(getString(R.string.step_list_parcel_key), stepList);
+            intent.putExtra(getString(R.string.step_id_key), stepId);
+
+            startActivity(intent);
 
 //        Intent intent = new Intent(this, StepDetailsActivity.class);
 //
@@ -102,6 +158,7 @@ public class StepListActivity extends AppCompatActivity
 
 //        String stepShortDescription = mRecipe.getStepList().get(stepId).getShortDescription();
 //        Toast.makeText(this, stepShortDescription, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

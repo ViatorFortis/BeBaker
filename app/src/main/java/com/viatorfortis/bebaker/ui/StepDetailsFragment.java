@@ -1,25 +1,35 @@
 package com.viatorfortis.bebaker.ui;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.FixedTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -34,6 +44,8 @@ import java.util.ArrayList;
 
 
 public class StepDetailsFragment extends Fragment {
+
+    private View mRootView;
 
     private ArrayList<Step> mStepList;
     private int mStepId;
@@ -51,9 +63,32 @@ public class StepDetailsFragment extends Fragment {
 
     private boolean mVideoProvided;
 
-    public void setStep(ArrayList<Step> stepList, int stepId) {
+    private boolean mNavigationLayoutVisible;
+
+
+    private Dialog mFullScreenDialog;
+    private ImageView mFullScreenIcon;
+
+    private FrameLayout mFullScreenButton;
+
+    private final String PLAYER_RESUME_WINDOW_STATE_KEY = "resumeWindow";
+
+    private final String PLAYER_RESUME_POSITION_STATE_KEY = "resumePosition";
+
+    private final String PLAYER_IN_FULL_SCREEN_STATE_KEY = "playerInFullScreen";
+
+    private final String PLAYER_IN_PAUSE_STATE_KEY = "playerInPause";
+
+
+    private int mResumeWindow = -1;
+    private long mResumePosition = 0;
+    private boolean mPlayerInFullScreen = false;
+    private boolean mPlayerInPause = true;
+
+    public void setStep(ArrayList<Step> stepList, int stepId, boolean navigationLayoutVisible) {
         mStepList = stepList;
         mStepId = stepId;
+        mNavigationLayoutVisible = navigationLayoutVisible;
     }
 
     public StepDetailsFragment() {
@@ -64,44 +99,99 @@ public class StepDetailsFragment extends Fragment {
         super.onAttach(context);
     }
 
+    private void initFullScreenDialog() {
+        mFullScreenDialog = new Dialog(getActivity(),
+                android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
+            public void onBackPressed() {
+                if (mPlayerInFullScreen) {
+                    closeFullScreenDialog();
+                }
+                super.onBackPressed();
+            }
+        };
+    }
+
+    private void openFullScreenDialog() {
+        ( (ViewGroup) mPlayerView.getParent() ).removeView(mPlayerView);
+        mFullScreenDialog.addContentView(mPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT) );
+        mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_shrink_screen) );
+        mPlayerInFullScreen = true;
+        mFullScreenDialog.show();
+    }
+
+    private void closeFullScreenDialog() {
+        ( (ViewGroup) mPlayerView.getParent() ).removeView(mPlayerView);
+        ( (FrameLayout) mRootView.findViewById(R.id.fl_player_container) ).addView(mPlayerView);
+        mPlayerInFullScreen = false;
+        mFullScreenDialog.dismiss();
+        mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_expand_screen) );
+    }
+
+    private void initFullScreenButton() {
+        PlayerControlView playerControlView = mPlayerView.findViewById(R.id.exo_controller);
+        mFullScreenIcon = playerControlView.findViewById(R.id.exo_fullscreen_icon);
+        mFullScreenButton = playerControlView.findViewById(R.id.exo_fullscreen_button);
+        mFullScreenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mPlayerInFullScreen) {
+                    closeFullScreenDialog();
+                } else {
+                    openFullScreenDialog();
+                }
+            }
+        });
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_step_details, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_step_details, container, false);
 
-        mDescriptionTextView = rootView.findViewById(R.id.tv_step_description);
-        mPrevStepButton = rootView.findViewById(R.id.b_prev_step);
-        mNextStepButton = rootView.findViewById(R.id.b_next_step);
+        mDescriptionTextView = mRootView.findViewById(R.id.tv_step_description);
+        mPrevStepButton = mRootView.findViewById(R.id.b_prev_step);
+        mNextStepButton = mRootView.findViewById(R.id.b_next_step);
 
-        mPlayerView = rootView.findViewById(R.id.pv_step_video);
-        mImageView = rootView.findViewById(R.id.iv_step_image);
+        mPlayerView = mRootView.findViewById(R.id.pv_step_video);
+        mImageView = mRootView.findViewById(R.id.iv_step_image);
+
 
         final String STEP_LIST_PARCEL_KEY = getString(R.string.step_list_parcel_key),
-                     STEP_ID_KEY = getString(R.string.step_id_key);
+                STEP_ID_KEY = getString(R.string.step_id_key);
 
-        if (savedInstanceState != null
-                && savedInstanceState.containsKey(STEP_LIST_PARCEL_KEY)
-                && savedInstanceState.containsKey(STEP_ID_KEY) ) {
+        if (savedInstanceState != null) {
+//                && savedInstanceState.containsKey(STEP_LIST_PARCEL_KEY)
+//                && savedInstanceState.containsKey(STEP_ID_KEY)
             ArrayList<Step> savedStepList = savedInstanceState.getParcelableArrayList(STEP_LIST_PARCEL_KEY);
             mStepList = savedStepList;
             mStepId = savedInstanceState.getInt(STEP_ID_KEY);
+            mNavigationLayoutVisible = savedInstanceState.getBoolean(getString(R.string.navigation_layout_visibility_bundle_value) );
+
+            mResumeWindow = savedInstanceState.getInt(PLAYER_RESUME_WINDOW_STATE_KEY);
+            mResumePosition = savedInstanceState.getLong(PLAYER_RESUME_POSITION_STATE_KEY);
+            mPlayerInFullScreen = savedInstanceState.getBoolean(PLAYER_IN_FULL_SCREEN_STATE_KEY);
+            mPlayerInPause = savedInstanceState.getBoolean(PLAYER_IN_PAUSE_STATE_KEY);
         }
 
-        String videoUrl = mStepList.get(mStepId).getVideoUrl();
+        LinearLayout navigationLayout = mRootView.findViewById(R.id.l_navigation);
+        navigationLayout.setVisibility(mNavigationLayoutVisible ? View.VISIBLE : View.INVISIBLE);
 
-        if (videoUrl == null
-                || videoUrl.isEmpty() ) {
-            mVideoProvided = false;
-            mPlayerView.setVisibility(View.GONE);
-        } else {
-            mVideoProvided = true;
-            mImageView.setVisibility(View.GONE);
-        }
+
+        // redundant code
+//        String videoUrl = mStepList.get(mStepId).getVideoUrl();
+//        if (videoUrl == null
+//                || videoUrl.isEmpty() ) {
+//            mVideoProvided = false;
+//            mPlayerView.setVisibility(View.GONE);
+//        } else {
+//            mVideoProvided = true;
+//            mImageView.setVisibility(View.GONE);
+//        }
 
         populateUI();
         setButtonClickListeners();
 
-        return rootView;
+        return mRootView;
     }
 
     private void setButtonClickListeners() {
@@ -110,6 +200,15 @@ public class StepDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mStepId--;
+
+                if (mPlayer != null) {
+                    mPlayer.stop();
+                }
+
+                mResumeWindow = -1;
+                mResumePosition = 0;
+                mPlayerInFullScreen = false;
+                mPlayerInPause = true;
                 populateUI();
             }
         });
@@ -118,6 +217,15 @@ public class StepDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mStepId++;
+
+                if (mPlayer != null) {
+                    mPlayer.stop();
+                }
+
+                mResumeWindow = -1;
+                mResumePosition = 0;
+                mPlayerInFullScreen = false;
+                mPlayerInPause = true;
                 populateUI();
             }
         });
@@ -129,13 +237,23 @@ public class StepDetailsFragment extends Fragment {
                     || videoUrl.isEmpty() );
     }
 
-    private void setMediaViewsVisibility(boolean videoProvided) {
+    private void setMediaViewsAttributes(boolean videoProvided) {
+        FrameLayout playerFrameLayout = mRootView.findViewById(R.id.fl_player_container);
+        FrameLayout stepImageFrameLayout = mRootView.findViewById(R.id.fl_step_image_container);
+
+
         if (videoProvided) {
             mPlayerView.setVisibility(View.VISIBLE);
+            playerFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1) );
+
             mImageView.setVisibility(View.GONE);
+            stepImageFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0) );
         } else {
             mPlayerView.setVisibility(View.GONE);
+            playerFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0) );
+
             mImageView.setVisibility(View.VISIBLE);
+            stepImageFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1) );
         }
     }
 
@@ -146,7 +264,7 @@ public class StepDetailsFragment extends Fragment {
 
         mVideoProvided = checkVideoProvided(step.getVideoUrl() );
 
-        setMediaViewsVisibility(mVideoProvided);
+        setMediaViewsAttributes(mVideoProvided);
 
 //        String videoUrl = mStepList.get(mStepId).getVideoUrl();
 //
@@ -164,7 +282,7 @@ public class StepDetailsFragment extends Fragment {
         if (!mVideoProvided) {
             String thumbnailUrl = mStepList.get(mStepId).getThumbnailUrl();
 
-            if(thumbnailUrl.isEmpty() ) {
+            if (thumbnailUrl.isEmpty() ) {
                 mImageView.setImageResource(R.drawable.img_labeled_oven);
             } else {
                 Picasso.with(getActivity())
@@ -179,19 +297,25 @@ public class StepDetailsFragment extends Fragment {
             } else {
                 String videoUrl = mStepList.get(mStepId).getVideoUrl();
                 preparePlayer(videoUrl);
+
+                if (mResumeWindow != -1) {
+                    mPlayerView.getPlayer().seekTo(mResumeWindow, mResumePosition);
+                }
             }
         }
 
-        if (mStepId == 0) {
-            mPrevStepButton.setVisibility(View.GONE);
-        } else {
-            mPrevStepButton.setVisibility(View.VISIBLE);
-        }
+        if (mNavigationLayoutVisible) {
+            if (mStepId == 0) {
+                mPrevStepButton.setVisibility(View.GONE);
+            } else {
+                mPrevStepButton.setVisibility(View.VISIBLE);
+            }
 
-        if (mStepId == (mStepList.size() - 1) ) {
-            mNextStepButton.setVisibility(View.GONE);
-        } else {
-            mNextStepButton.setVisibility(View.VISIBLE);
+            if (mStepId == (mStepList.size() - 1)) {
+                mNextStepButton.setVisibility(View.GONE);
+            } else {
+                mNextStepButton.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -201,17 +325,46 @@ public class StepDetailsFragment extends Fragment {
 
         TrackSelection.Factory videoTrackSelectionFactory = new FixedTrackSelection.Factory();
         DefaultTrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-        mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector);
+
+        LoadControl loadControl = new DefaultLoadControl();
+        mPlayer = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getActivity() ), trackSelector, loadControl);
+
+        //mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector);
+
+        mPlayer.addListener(new Player.DefaultEventListener() {
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                if (playWhenReady
+                        && playbackState == Player.STATE_READY) {
+                    mPlayerInPause = false;
+                } else if (playWhenReady) {
+                } else {
+                    mPlayerInPause = true;
+                }
+            }
+        });
+
         mPlayerView.setPlayer(mPlayer);
 
         String videoUrl = mStepList.get(mStepId).getVideoUrl();
         preparePlayer(videoUrl);
+
+        if (mResumeWindow != -1) {
+            mPlayerView.getPlayer().seekTo(mResumeWindow, mResumePosition);
+        }
     }
 
     private void preparePlayer(String videoUrl) {
-        mPlayer.setPlayWhenReady(false);
+        //mPlayer.setPlayWhenReady(false);
+        mPlayer.setPlayWhenReady(!mPlayerInPause);
+
         mMediaSource = buildMediaSource(Uri.parse(videoUrl) );
-        mPlayer.prepare(mMediaSource, true, false);
+
+        //mPlayer.prepare(mMediaSource, true, true);
+        mPlayer.prepare(mMediaSource);
+
+        //mPlayer.setPlayWhenReady(!mPlayerInPause);
+
     }
 
     @SuppressLint("InlinedApi")
@@ -229,6 +382,7 @@ public class StepDetailsFragment extends Fragment {
 //            playbackPosition = mPlayer.getCurrentPosition();
 //            currentWindow = mPlayer.getCurrentWindowIndex();
 //            playWhenReady = mPlayer.getPlayWhenReady();
+            mPlayer.stop();
             mPlayer.release();
             mPlayer = null;
         }
@@ -245,25 +399,63 @@ public class StepDetailsFragment extends Fragment {
         if (mVideoProvided
                 && Util.SDK_INT > 23) {
             initializePlayer();
+
+            initFullScreenDialog();
+            initFullScreenButton();
+
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                mPlayerInFullScreen = false;
+            } else {
+                mPlayerInFullScreen = true;
+            }
+
+            if (mPlayerInFullScreen) {
+                openFullScreenDialog();
+            }
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        hideSystemUi();
+        //hideSystemUi();
         if (mVideoProvided
                 && (Util.SDK_INT <= 23 || mPlayer == null) ) {
             initializePlayer();
+
+            initFullScreenDialog();
+            initFullScreenButton();
+
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                mPlayerInFullScreen = false;
+            } else {
+                mPlayerInFullScreen = true;
+            }
+
+            if (mPlayerInFullScreen) {
+                openFullScreenDialog();
+            }
         }
     }
 
     @Override
     public void onPause() {
         super.onPause();
+
         if (mVideoProvided
                 && Util.SDK_INT <= 23) {
+
+            if (mPlayerView != null
+                    && mPlayerView.getPlayer() != null) {
+                mResumeWindow = mPlayerView.getPlayer().getCurrentWindowIndex();
+                mResumePosition = Math.max(0, mPlayerView.getPlayer().getContentPosition() );
+            }
+
             releasePlayer();
+
+            if (mFullScreenDialog != null) {
+                mFullScreenDialog.dismiss();
+            }
         }
     }
 
@@ -272,7 +464,17 @@ public class StepDetailsFragment extends Fragment {
         super.onStop();
         if (mVideoProvided
                 && Util.SDK_INT > 23) {
+            if (mPlayerView != null
+                    && mPlayerView.getPlayer() != null) {
+                mResumeWindow = mPlayerView.getPlayer().getCurrentWindowIndex();
+                mResumePosition = Math.max(0, mPlayerView.getPlayer().getContentPosition() );
+            }
+
             releasePlayer();
+
+            if (mFullScreenDialog != null) {
+                mFullScreenDialog.dismiss();
+            }
         }
     }
 
@@ -282,5 +484,16 @@ public class StepDetailsFragment extends Fragment {
 
         outState.putParcelableArrayList(getString(R.string.step_list_parcel_key), mStepList);
         outState.putInt(getString(R.string.step_id_key), mStepId);
+        outState.putBoolean(getString(R.string.navigation_layout_visibility_bundle_value), mNavigationLayoutVisible);
+
+        outState.putInt(PLAYER_RESUME_WINDOW_STATE_KEY, mResumeWindow);
+        outState.putLong(PLAYER_RESUME_POSITION_STATE_KEY, mResumePosition);
+        outState.putBoolean(PLAYER_IN_FULL_SCREEN_STATE_KEY, mPlayerInFullScreen);
+        outState.putBoolean(PLAYER_IN_PAUSE_STATE_KEY, mPlayerInPause);
     }
+
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//    }
 }
