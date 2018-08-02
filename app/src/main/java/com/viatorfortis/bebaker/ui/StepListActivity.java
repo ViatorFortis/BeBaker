@@ -49,10 +49,10 @@ public class StepListActivity extends AppCompatActivity
             return;
         }
 
+        mTabletMode = (findViewById(R.id.step_details_container) != null);
+
         if (savedInstanceState == null) {
             setTitle(mRecipe.getName() );
-
-            mTabletMode = (findViewById(R.id.step_details_container) != null);
 
             StepListFragment stepListFragment = new StepListFragment();
             stepListFragment.setRecipe(mRecipe);
@@ -166,5 +166,6 @@ public class StepListActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
 
         outState.putString(getString(R.string.recipe_name_key), mRecipe.getName() );
+        //outState.putBoolean("tabletMode", mTabletMode);
     }
 }
