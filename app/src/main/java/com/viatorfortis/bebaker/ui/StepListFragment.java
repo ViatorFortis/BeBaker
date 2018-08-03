@@ -80,12 +80,18 @@ public class StepListFragment extends Fragment {
         if (savedInstanceState == null
                 || !savedInstanceState.containsKey(STEP_LIST_PARCEL_KEY) ) {
             stepList = mRecipe.getStepList();
+
+            mRecipeDetailAdapter = new RecipeDetailAdapter(stepList, mContext, mHighlighCurrentStep, 1);
         } else {
             ArrayList<Step> savedStepList = savedInstanceState.getParcelableArrayList(STEP_LIST_PARCEL_KEY);
             stepList = savedStepList;
+
+            int currentStepNumber = savedInstanceState.getInt(getString(R.string.current_step_number) );
+            mHighlighCurrentStep = savedInstanceState.getBoolean(getString(R.string.highlight_current_step) );
+            mRecipeDetailAdapter = new RecipeDetailAdapter(stepList, mContext, mHighlighCurrentStep, currentStepNumber);
         }
 
-        mRecipeDetailAdapter = new RecipeDetailAdapter(stepList, mContext, mHighlighCurrentStep);
+        //mRecipeDetailAdapter = new RecipeDetailAdapter(stepList, mContext, mHighlighCurrentStep, 0);
         recyclerView.setAdapter(mRecipeDetailAdapter);
 
         //recipeDetailAdapter.notifyDataSetChanged();
@@ -98,5 +104,7 @@ public class StepListFragment extends Fragment {
         super.onSaveInstanceState(outState);
 
         outState.putParcelableArrayList(getString(R.string.step_list_parcel_key), mRecipeDetailAdapter.getStepList() );
+        outState.putInt(getString(R.string.current_step_number), mRecipeDetailAdapter.getCurrentStepNumber() );
+        outState.putBoolean(getString(R.string.highlight_current_step), mHighlighCurrentStep);
     }
 }

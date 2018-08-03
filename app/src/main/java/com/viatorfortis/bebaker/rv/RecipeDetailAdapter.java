@@ -40,11 +40,12 @@ public class RecipeDetailAdapter
         void onStepClick(int stepId/*, View view*/);
     }
 
-    public RecipeDetailAdapter(ArrayList<Step> stepList, Context context, boolean highlightSelectedViewholder) {
+    public RecipeDetailAdapter(ArrayList<Step> stepList, Context context, boolean highlightSelectedViewholder, int currentStepNumber) {
         mStepList = stepList;
         mHighlightSelectedStepViewholder = highlightSelectedViewholder;
         mIngredientListCallback = (OnIngredientListClickListener) context;
         mStepCallback = (OnStepClickListener) context;
+        mCurrentStepNumber = currentStepNumber;
     }
 
     @Override
@@ -167,5 +168,9 @@ public class RecipeDetailAdapter
                 textView.setTextColor(Color.WHITE);
             }
         }
+    }
+
+    public int getCurrentStepNumber() {
+        return mCurrentStepNumber;
     }
 }

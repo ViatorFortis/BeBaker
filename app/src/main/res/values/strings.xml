@@ -46,4 +46,6 @@
     <string name="ingredient_list_loaded_to_widget_toast">%1$s ingredient list has been loaded to widget</string>
 
     <string name="navigation_layout_visibility_bundle_value">navLayoutVisibility</string>
+    <string name="current_step_number">currentStepNumber</string>
+    <string name="highlight_current_step">highlightCurrentStep</string>
 </resources>
