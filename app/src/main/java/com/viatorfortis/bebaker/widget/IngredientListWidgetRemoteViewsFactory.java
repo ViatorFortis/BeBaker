@@ -17,7 +17,6 @@ import java.util.List;
 public class IngredientListWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private Context mContext;
-    private String mRecipeName;
     private ArrayList<Ingredient> mIngredientList;
     private final int VIEW_TYPE_COUNT = 1;
 
@@ -36,9 +35,9 @@ public class IngredientListWidgetRemoteViewsFactory implements RemoteViewsServic
 
         final String WIDGET_RECIPE_NAME_PREF_KEY = mContext.getString(R.string.widget_recipe_name_pref_key);
 
-        if (sharedPreferences.contains(WIDGET_RECIPE_NAME_PREF_KEY) ) {
-            mRecipeName = sharedPreferences.getString(WIDGET_RECIPE_NAME_PREF_KEY, "");
-        }
+//        if (sharedPreferences.contains(WIDGET_RECIPE_NAME_PREF_KEY) ) {
+//            String recipeName = sharedPreferences.getString(WIDGET_RECIPE_NAME_PREF_KEY, "");
+//        }
 
         final String WIDGET_INGREDIENT_LIST_PREF_KEY = mContext.getString(R.string.widget_ingredient_list_pref_key);
 

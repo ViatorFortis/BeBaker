@@ -59,7 +59,6 @@ public class StepDetailsFragment extends Fragment {
     private PlayerView mPlayerView;
     private SimpleExoPlayer mPlayer;
     private DataSource.Factory mMediaDataSourceFactory;
-    private MediaSource mMediaSource;
 
     private ImageView mImageView;
 
@@ -70,8 +69,6 @@ public class StepDetailsFragment extends Fragment {
 
     private Dialog mFullScreenDialog;
     private ImageView mFullScreenIcon;
-
-    private FrameLayout mFullScreenButton;
 
     private final String PLAYER_RESUME_WINDOW_STATE_KEY = "resumeWindow";
 
@@ -146,8 +143,8 @@ public class StepDetailsFragment extends Fragment {
 
         PlayerControlView playerControlView = mPlayerView.findViewById(R.id.exo_controller);
         mFullScreenIcon = playerControlView.findViewById(R.id.exo_fullscreen_icon);
-        mFullScreenButton = playerControlView.findViewById(R.id.exo_fullscreen_button);
-        mFullScreenButton.setOnClickListener(new View.OnClickListener() {
+        FrameLayout fullScreenButton = playerControlView.findViewById(R.id.exo_fullscreen_button);
+        fullScreenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mPlayerInFullScreen) {
@@ -502,10 +499,10 @@ public class StepDetailsFragment extends Fragment {
         //mPlayer.setPlayWhenReady(false);
         mPlayer.setPlayWhenReady(!mPlayerInPause);
 
-        mMediaSource = buildMediaSource(Uri.parse(videoUrl) );
+        MediaSource mediaSource = buildMediaSource(Uri.parse(videoUrl));
 
         //mPlayer.prepare(mMediaSource, true, true);
-        mPlayer.prepare(mMediaSource);
+        mPlayer.prepare(mediaSource);
 
         //mPlayer.setPlayWhenReady(!mPlayerInPause);
 

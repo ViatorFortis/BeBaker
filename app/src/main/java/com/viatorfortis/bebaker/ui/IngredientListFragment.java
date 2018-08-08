@@ -32,8 +32,6 @@ public class IngredientListFragment extends Fragment {
     private String mRecipeName;
     private ArrayList<Ingredient> mIngredientList;
 
-    private Button mLoadListToWidgetButton;
-
     public IngredientListFragment() {
     }
 
@@ -41,8 +39,8 @@ public class IngredientListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_ingredient_list, container, false);
 
-        mLoadListToWidgetButton = rootView.findViewById(R.id.btn_load_list_to_widget);
-        mLoadListToWidgetButton.setOnClickListener(new View.OnClickListener() {
+        Button loadListToWidgetButton = rootView.findViewById(R.id.btn_load_list_to_widget);
+        loadListToWidgetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = getContext();
