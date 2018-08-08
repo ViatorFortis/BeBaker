@@ -404,6 +404,7 @@ public class StepDetailsFragment extends Fragment {
                         && playbackState == Player.STATE_READY) {
                     mPlayerInPause = false;
                 } else if (playWhenReady) {
+                    // nothing to do
                 } else {
                     mPlayerInPause = true;
                 }

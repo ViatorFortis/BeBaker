@@ -20,7 +20,7 @@ public class RecipeDetailAdapter
     private final int INGREDIENT_VIEW_TYPE_ID = 0;
     private final int STEP_VIEW_TYPE_ID = 1;
 
-    private int mCurrentStepNumber = 1;
+    private int mCurrentStepNumber;
 
     private final ArrayList<Step> mStepList;
 
