@@ -45,18 +45,24 @@ public class StepListFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        try {
-            //mActivity = (RecipeDetailAdapter.OnIngredientListClickListener) context;
-            RecipeDetailAdapter.OnIngredientListClickListener ingredientListCallBack = (RecipeDetailAdapter.OnIngredientListClickListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement RecipeDetailAdapter.OnIngredientListClickListener");
+        if ( !(context instanceof RecipeDetailAdapter.OnIngredientListClickListener) ) {
+            throw new ClassCastException("Context must implement RecipeDetailAdapter.OnIngredientListClickListener");
         }
+//        try {
+//            //mActivity = (RecipeDetailAdapter.OnIngredientListClickListener) context;
+//            RecipeDetailAdapter.OnIngredientListClickListener ingredientListCallBack = (RecipeDetailAdapter.OnIngredientListClickListener) context;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(context.toString() + " must implement RecipeDetailAdapter.OnIngredientListClickListener");
+//        }
 
-        try {
-            RecipeDetailAdapter.OnStepClickListener stepCallBack = (RecipeDetailAdapter.OnStepClickListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement RecipeDetailAdapter.OnIngredientListClickListener");
+        if (!(context instanceof RecipeDetailAdapter.OnStepClickListener)) {
+            throw new ClassCastException("Context must implement RecipeDetailAdapter.OnIngredientListClickListener");
         }
+//        try {
+//            RecipeDetailAdapter.OnStepClickListener stepCallBack = (RecipeDetailAdapter.OnStepClickListener) context;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(context.toString() + " must implement RecipeDetailAdapter.OnIngredientListClickListener");
+//        }
 
         mContext = context;
     }
