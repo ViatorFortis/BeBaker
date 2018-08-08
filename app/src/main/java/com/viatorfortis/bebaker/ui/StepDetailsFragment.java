@@ -177,8 +177,7 @@ public class StepDetailsFragment extends Fragment {
         if (savedInstanceState != null) {
 //                && savedInstanceState.containsKey(STEP_LIST_PARCEL_KEY)
 //                && savedInstanceState.containsKey(STEP_ID_KEY)
-            ArrayList<Step> savedStepList = savedInstanceState.getParcelableArrayList(STEP_LIST_PARCEL_KEY);
-            mStepList = savedStepList;
+            mStepList = savedInstanceState.getParcelableArrayList(STEP_LIST_PARCEL_KEY);
             mStepId = savedInstanceState.getInt(STEP_ID_KEY);
             mNavigationLayoutVisible = savedInstanceState.getBoolean(getString(R.string.navigation_layout_visibility_bundle_value) );
 

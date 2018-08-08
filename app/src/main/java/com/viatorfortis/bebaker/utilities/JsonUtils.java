@@ -13,8 +13,7 @@ public final class JsonUtils {
     public static List<Recipe> parseRecipeListJson(String jsonArray)
             throws JsonSyntaxException {
         Type listType = new TypeToken<ArrayList<Recipe>>(){}.getType();
-        List<Recipe> recipeList = new Gson().fromJson(jsonArray, listType);
 
-        return recipeList;
+        return new Gson().fromJson(jsonArray, listType);
     }
 }

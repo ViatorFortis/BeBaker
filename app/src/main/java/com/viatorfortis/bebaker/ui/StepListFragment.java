@@ -83,8 +83,7 @@ public class StepListFragment extends Fragment {
 
             mRecipeDetailAdapter = new RecipeDetailAdapter(stepList, mContext, mHighlighCurrentStep, 1);
         } else {
-            ArrayList<Step> savedStepList = savedInstanceState.getParcelableArrayList(STEP_LIST_PARCEL_KEY);
-            stepList = savedStepList;
+            stepList = savedInstanceState.getParcelableArrayList(STEP_LIST_PARCEL_KEY);
 
             int currentStepNumber = savedInstanceState.getInt(getString(R.string.current_step_number) );
             mHighlighCurrentStep = savedInstanceState.getBoolean(getString(R.string.highlight_current_step) );
