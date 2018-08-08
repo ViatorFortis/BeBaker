@@ -12,16 +12,16 @@ public class Recipe
         implements Parcelable {
 
     @SerializedName("id")
-    private int mId;
+    private final int mId;
 
     @SerializedName("name")
-    private String mName;
+    private final String mName;
 
     @SerializedName("ingredients")
-    private List<Ingredient> mIngredientList;
+    private final List<Ingredient> mIngredientList;
 
     @SerializedName("steps")
-    private ArrayList<Step> mStepList;
+    private final ArrayList<Step> mStepList;
 
     public int getId() {
         return mId;

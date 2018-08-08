@@ -16,8 +16,8 @@ import java.util.List;
 
 class IngredientListWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
-    private Context mContext;
-    private ArrayList<Ingredient> mIngredientList;
+    private final Context mContext;
+    private final ArrayList<Ingredient> mIngredientList;
     private final int VIEW_TYPE_COUNT = 1;
 
     public IngredientListWidgetRemoteViewsFactory(Context context) {

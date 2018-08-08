@@ -13,7 +13,7 @@ import com.viatorfortis.bebaker.model.Ingredient;
 import java.util.List;
 
 public class IngredientAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
-    private List<Ingredient> mIngredientList;
+    private final List<Ingredient> mIngredientList;
 
     public IngredientAdapter (List<Ingredient> ingredientList) {
         mIngredientList = ingredientList;
@@ -21,9 +21,9 @@ public class IngredientAdapter extends RecyclerView.Adapter <RecyclerView.ViewHo
 
     class IngredientViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView mIngredientTextView;
-        private TextView mQuantityTextView;
-        private TextView mMeasureTextView;
+        private final TextView mIngredientTextView;
+        private final TextView mQuantityTextView;
+        private final TextView mMeasureTextView;
 
         IngredientViewHolder(View itemView) {
             super(itemView);

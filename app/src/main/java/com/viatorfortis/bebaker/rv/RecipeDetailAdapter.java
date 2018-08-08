@@ -22,11 +22,11 @@ public class RecipeDetailAdapter
 
     private int mCurrentStepNumber = 1;
 
-    private ArrayList<Step> mStepList;
+    private final ArrayList<Step> mStepList;
 
     private RecyclerView mRecyclerView;
 
-    private boolean mHighlightSelectedStepViewholder;
+    private final boolean mHighlightSelectedStepViewholder;
 
     private final OnIngredientListClickListener mIngredientListCallback;
 
@@ -89,7 +89,7 @@ public class RecipeDetailAdapter
 
     class StepViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
-        private TextView mShortDescriptionTextView;
+        private final TextView mShortDescriptionTextView;
 
         StepViewHolder(View itemView) {
             super(itemView);

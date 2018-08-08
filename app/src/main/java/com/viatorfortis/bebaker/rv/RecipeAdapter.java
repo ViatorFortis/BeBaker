@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class RecipeAdapter
         extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 
-    private ArrayList<Recipe> mRecipeList;
+    private final ArrayList<Recipe> mRecipeList;
 
     private final OnRecipeClickListener mCallback;
 
