@@ -126,7 +126,7 @@ public class StepListActivity extends AppCompatActivity
         } else {
             Intent intent = new Intent(this, StepDetailsActivity.class);
 
-            ArrayList<Step> stepList = (ArrayList<Step>) mRecipe.getStepList();
+            ArrayList<Step> stepList = mRecipe.getStepList();
 
             intent.putParcelableArrayListExtra(getString(R.string.step_list_parcel_key), stepList);
             intent.putExtra(getString(R.string.step_id_key), stepId);
