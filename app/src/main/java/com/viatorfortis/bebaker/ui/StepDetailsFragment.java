@@ -1,6 +1,5 @@
 package com.viatorfortis.bebaker.ui;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -33,7 +32,6 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 
-import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
