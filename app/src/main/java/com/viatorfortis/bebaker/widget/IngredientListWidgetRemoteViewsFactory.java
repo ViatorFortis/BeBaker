@@ -33,7 +33,7 @@ class IngredientListWidgetRemoteViewsFactory implements RemoteViewsService.Remot
     public void onDataSetChanged() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
-        final String WIDGET_RECIPE_NAME_PREF_KEY = mContext.getString(R.string.widget_recipe_name_pref_key);
+//        final String WIDGET_RECIPE_NAME_PREF_KEY = mContext.getString(R.string.widget_recipe_name_pref_key);
 
 //        if (sharedPreferences.contains(WIDGET_RECIPE_NAME_PREF_KEY) ) {
 //            String recipeName = sharedPreferences.getString(WIDGET_RECIPE_NAME_PREF_KEY, "");

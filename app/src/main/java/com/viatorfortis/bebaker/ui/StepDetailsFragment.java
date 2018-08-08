@@ -58,7 +58,6 @@ public class StepDetailsFragment extends Fragment {
 
     private PlayerView mPlayerView;
     private SimpleExoPlayer mPlayer;
-    private DataSource.Factory mMediaDataSourceFactory;
 
     private ImageView mImageView;
 
@@ -387,75 +386,6 @@ public class StepDetailsFragment extends Fragment {
         }
     }
 
-    private void populateUI() {
-        Log.d(TAG, "populateUI()");
-
-//        Step step = mStepList.get(mStepId);
-
-//        mDescriptionTextView.setText(step.getDescription() );
-
-//        mVideoProvided = checkVideoProvided(step.getVideoUrl() );
-
-//        setMediaViewsVisibility(mVideoProvided);
-
-//        String videoUrl = mStepList.get(mStepId).getVideoUrl();
-//
-//        if (videoUrl == null
-//                || videoUrl.isEmpty() ) {
-//            mVideoProvided = false;
-//            mPlayerView.setVisibility(View.GONE);
-//            mImageView.setVisibility(View.VISIBLE);
-//        } else {
-//            mVideoProvided = true;
-//            mPlayerView.setVisibility(View.VISIBLE);
-//            mImageView.setVisibility(View.GONE);
-//        }
-
-
-        // 04.08.2018
-        //initMediaViews();
-        // 04.08.2018
-//        if (!mVideoProvided) {
-//            String thumbnailUrl = mStepList.get(mStepId).getThumbnailUrl();
-//
-//            if (thumbnailUrl.isEmpty() ) {
-//                mImageView.setImageResource(R.drawable.img_labeled_oven);
-//            } else {
-//                Picasso.with(getActivity())
-//                        .load(Uri.parse(thumbnailUrl) )
-//                        .placeholder(R.drawable.img_labeled_loading)
-//                        .error(R.drawable.img_labeled_oven)
-//                        .into(mImageView);
-//            }
-//        } else {
-//            if (mPlayer == null) {
-//                initializePlayer();
-//            } else {
-//                String videoUrl = mStepList.get(mStepId).getVideoUrl();
-//                preparePlayer(videoUrl);
-//
-//                if (mResumeWindow != -1) {
-//                    mPlayerView.getPlayer().seekTo(mResumeWindow, mResumePosition);
-//                }
-//            }
-//        }
-
-        // 04.08.2018
-//        if (mNavigationLayoutVisible) {
-//            if (mStepId == 0) {
-//                mPrevStepButton.setVisibility(View.GONE);
-//            } else {
-//                mPrevStepButton.setVisibility(View.VISIBLE);
-//            }
-//
-//            if (mStepId == (mStepList.size() - 1)) {
-//                mNextStepButton.setVisibility(View.GONE);
-//            } else {
-//                mNextStepButton.setVisibility(View.VISIBLE);
-//            }
-//        }
-    }
-
     private void initializePlayer() {
         Log.d(TAG, "initializePlayer()");
 
@@ -505,18 +435,6 @@ public class StepDetailsFragment extends Fragment {
 
         //mPlayer.setPlayWhenReady(!mPlayerInPause);
 
-    }
-
-    @SuppressLint("InlinedApi")
-    private void hideSystemUi() {
-        Log.d(TAG, "hideSystemUi()");
-
-        mPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
 
     private void releasePlayer() {

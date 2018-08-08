@@ -41,13 +41,6 @@ public class Recipe
     }
 
 
-    public Recipe(int id, String name, List<Ingredient> ingredientList, ArrayList<Step> stepList) {
-        mId = id;
-        mName = name;
-        mIngredientList = ingredientList;
-        mStepList = stepList;
-    }
-
     private Recipe(Parcel parcel) {
         mId = parcel.readInt();
         mName = parcel.readString();
