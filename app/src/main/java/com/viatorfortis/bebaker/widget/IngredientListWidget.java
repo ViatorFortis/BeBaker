@@ -13,7 +13,7 @@ import com.viatorfortis.bebaker.R;
 
 public class IngredientListWidget extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+    private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_ingredient_list);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);

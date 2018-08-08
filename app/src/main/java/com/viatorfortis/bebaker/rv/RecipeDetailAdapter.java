@@ -87,11 +87,11 @@ public class RecipeDetailAdapter
         }
     }
 
-    public class StepViewHolder extends RecyclerView.ViewHolder
+    class StepViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         private TextView mShortDescriptionTextView;
 
-        public StepViewHolder(View itemView) {
+        StepViewHolder(View itemView) {
             super(itemView);
 
             mShortDescriptionTextView = itemView.findViewById(R.id.tv_step_short_description);
@@ -99,7 +99,7 @@ public class RecipeDetailAdapter
             itemView.setOnClickListener(this);
         }
 
-        public void populate(Step step) {
+        void populate(Step step) {
             mShortDescriptionTextView.setText(step.getShortDescription() );
         }
 

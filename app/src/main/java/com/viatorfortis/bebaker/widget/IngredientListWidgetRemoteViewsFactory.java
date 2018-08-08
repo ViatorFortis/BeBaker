@@ -14,7 +14,7 @@ import com.viatorfortis.bebaker.model.Ingredient;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngredientListWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+class IngredientListWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private Context mContext;
     private ArrayList<Ingredient> mIngredientList;

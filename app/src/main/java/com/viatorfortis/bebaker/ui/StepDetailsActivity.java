@@ -15,9 +15,9 @@ import java.util.ArrayList;
 
 public class StepDetailsActivity extends AppCompatActivity {
 
-    public ArrayList<Step> mStepList;
+    private ArrayList<Step> mStepList;
 
-    public int mStepId;
+    private int mStepId;
 
 
     @Override

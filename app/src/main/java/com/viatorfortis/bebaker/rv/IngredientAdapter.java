@@ -19,7 +19,7 @@ public class IngredientAdapter extends RecyclerView.Adapter <RecyclerView.ViewHo
         mIngredientList = ingredientList;
     }
 
-    public class IngredientViewHolder extends RecyclerView.ViewHolder {
+    class IngredientViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mIngredientTextView;
         private TextView mQuantityTextView;
