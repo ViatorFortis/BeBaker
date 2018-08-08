@@ -87,10 +87,6 @@ public class RecipeListFragment extends Fragment
     @Override
     public Loader onCreateLoader(int i, Bundle bundle) {
         return new AsyncTaskLoader<List<Recipe>>(getContext() ) {
-            @Override
-            protected void onStartLoading() {
-                super.onStartLoading();
-            }
 
             @Override
             public List<Recipe> loadInBackground() {
