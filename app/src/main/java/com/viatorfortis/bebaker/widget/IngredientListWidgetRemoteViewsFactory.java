@@ -58,8 +58,7 @@ class IngredientListWidgetRemoteViewsFactory implements RemoteViewsService.Remot
 
     @Override
     public RemoteViews getViewAt(int position) {
-        if (mIngredientList == null
-                || mIngredientList.size() == 0) {
+        if (mIngredientList.size() == 0) {
             return null;
         }
 
