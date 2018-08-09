@@ -40,9 +40,6 @@ public class StepDetailsActivity extends AppCompatActivity {
 
         mStepId = getIntent().getExtras().getInt(getString(R.string.step_id_key) );
 
-//        mPrevStep = getIntent().getExtras().getParcelable(getString(R.string.previous_step_key) );
-//        mNextStep = getIntent().getExtras().getParcelable(getString(R.string.next_step_key) );
-
         if (savedInstanceState == null) {
             StepDetailsFragment stepDetailsFragment = new StepDetailsFragment();
             stepDetailsFragment.setStep(mStepList, mStepId, true);

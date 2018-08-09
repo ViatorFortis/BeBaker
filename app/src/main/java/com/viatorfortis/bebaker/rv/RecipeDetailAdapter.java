@@ -37,7 +37,7 @@ public class RecipeDetailAdapter
     private final OnStepClickListener mStepCallback;
 
     public interface OnStepClickListener {
-        void onStepClick(int stepId/*, View view*/);
+        void onStepClick(int stepId);
     }
 
     public RecipeDetailAdapter(ArrayList<Step> stepList, Context context, boolean highlightSelectedViewholder, int currentStepNumber) {
@@ -116,15 +116,13 @@ public class RecipeDetailAdapter
                 highlightViewHolder(view);
             }
 
-            mStepCallback.onStepClick(getAdapterPosition() - 1/*, v*/);
+            mStepCallback.onStepClick(getAdapterPosition() - 1);
         }
 
         private void deemphasizeViewHolder(View view) {
             view.setBackgroundResource(R.color.cardview_light_background);
             TextView textView = view.findViewById(R.id.tv_step_short_description);
             textView.setTextColor(0x7F040028);
-            //textView.setTextColor(R.color.cardview_shadow_end_color);
-            //textView.setTextColor( ( (Context) mStepCallback).getResources().getColor(R.color.cardview_shadow_end_color) );
         }
 
         private void highlightViewHolder(View view) {

@@ -172,8 +172,6 @@ public class StepDetailsFragment extends Fragment {
                 STEP_ID_KEY = getString(R.string.step_id_key);
 
         if (savedInstanceState != null) {
-//                && savedInstanceState.containsKey(STEP_LIST_PARCEL_KEY)
-//                && savedInstanceState.containsKey(STEP_ID_KEY)
             mStepList = savedInstanceState.getParcelableArrayList(STEP_LIST_PARCEL_KEY);
             mStepId = savedInstanceState.getInt(STEP_ID_KEY);
             mNavigationLayoutVisible = savedInstanceState.getBoolean(getString(R.string.navigation_layout_visibility_bundle_value) );
@@ -185,21 +183,6 @@ public class StepDetailsFragment extends Fragment {
         }
 
         LinearLayout navigationLayout = mRootView.findViewById(R.id.l_navigation);
-
-
-
-        // redundant code
-//        String videoUrl = mStepList.get(mStepId).getVideoUrl();
-//        if (videoUrl == null
-//                || videoUrl.isEmpty() ) {
-//            mVideoProvided = false;
-//            mPlayerView.setVisibility(View.GONE);
-//        } else {
-//            mVideoProvided = true;
-//            mImageView.setVisibility(View.GONE);
-//        }
-
-
 
         if (mNavigationLayoutVisible) {
             navigationLayout.setVisibility(View.VISIBLE);
@@ -217,13 +200,6 @@ public class StepDetailsFragment extends Fragment {
         mDescriptionTextView.setText(step.getDescription() );
 
         setMediaViewsVisibility(mVideoProvided);
-
-        //populateUI(); - empty
-
-
-
-//        navigationLayout.setVisibility(mNavigationLayoutVisible ? View.VISIBLE : View.INVISIBLE);
-//        setButtonClickListeners();
 
         return mRootView;
     }
@@ -274,12 +250,9 @@ public class StepDetailsFragment extends Fragment {
 
                 mDescriptionTextView.setText(step.getDescription() );
 
-                // 04.08.2018
                 setNavigationButtonsVisibility();
 
                 setMediaViewsVisibility(mVideoProvided);
-
-                //populateUI(); - empty
 
                 initMediaViews();
             }
@@ -314,12 +287,9 @@ public class StepDetailsFragment extends Fragment {
 
                 mDescriptionTextView.setText(step.getDescription() );
 
-                // 04.08.2018
                 setNavigationButtonsVisibility();
 
                 setMediaViewsVisibility(mVideoProvided);
-
-                //populateUI(); - empty
 
                 initMediaViews();
             }
@@ -395,8 +365,6 @@ public class StepDetailsFragment extends Fragment {
         LoadControl loadControl = new DefaultLoadControl();
         mPlayer = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getActivity() ), trackSelector, loadControl);
 
-        //mPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector);
-
         mPlayer.addListener(new Player.DefaultEventListener() {
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -424,25 +392,17 @@ public class StepDetailsFragment extends Fragment {
     private void preparePlayer(String videoUrl) {
         Log.d(TAG, "preparePlayer()");
 
-        //mPlayer.setPlayWhenReady(false);
         mPlayer.setPlayWhenReady(!mPlayerInPause);
 
         MediaSource mediaSource = buildMediaSource(Uri.parse(videoUrl));
 
-        //mPlayer.prepare(mMediaSource, true, true);
         mPlayer.prepare(mediaSource);
-
-        //mPlayer.setPlayWhenReady(!mPlayerInPause);
-
     }
 
     private void releasePlayer() {
         Log.d(TAG, "releasePlayer()");
 
         if (mPlayer != null) {
-//            playbackPosition = mPlayer.getCurrentPosition();
-//            currentWindow = mPlayer.getCurrentWindowIndex();
-//            playWhenReady = mPlayer.getPlayWhenReady();
             mPlayer.stop();
             mPlayer.release();
             mPlayer = null;
@@ -462,14 +422,8 @@ public class StepDetailsFragment extends Fragment {
 
         super.onStart();
 
-        if (Util.SDK_INT > 23)
-        // 04.08.2018
-//        if (mVideoProvided
-//                && Util.SDK_INT > 23)
-        {
+        if (Util.SDK_INT > 23) {
             initMediaViews();
-            // 04.08.2018
-            //initializePlayer();
 
             initFullScreenDialog();
             initFullScreenButton();
@@ -491,16 +445,9 @@ public class StepDetailsFragment extends Fragment {
         Log.d(TAG, "onResume()");
 
         super.onResume();
-        //hideSystemUi();
 
-        if (Util.SDK_INT <= 23)
-        // 04.08.2018
-//        if (mVideoProvided
-//                && (Util.SDK_INT <= 23 || mPlayer == null) )
-        {
+        if (Util.SDK_INT <= 23) {
             initMediaViews();
-            // 04.08.2018
-            //initializePlayer();
 
             initFullScreenDialog();
             initFullScreenButton();
@@ -525,14 +472,6 @@ public class StepDetailsFragment extends Fragment {
 
         if (mVideoProvided
                 && Util.SDK_INT <= 23) {
-
-            // 04.08.2018
-//            if (mPlayerView != null
-//                    && mPlayerView.getPlayer() != null) {
-//                mResumeWindow = mPlayerView.getPlayer().getCurrentWindowIndex();
-//                mResumePosition = Math.max(0, mPlayerView.getPlayer().getContentPosition() );
-//            }
-
             releasePlayer();
 
             if (mFullScreenDialog != null) {
@@ -548,14 +487,6 @@ public class StepDetailsFragment extends Fragment {
         super.onStop();
         if (mVideoProvided
                 && Util.SDK_INT > 23) {
-
-            // 04.08.2018
-//            if (mPlayerView != null
-//                    && mPlayerView.getPlayer() != null) {
-//                mResumeWindow = mPlayerView.getPlayer().getCurrentWindowIndex();
-//                mResumePosition = Math.max(0, mPlayerView.getPlayer().getContentPosition() );
-//            }
-
             releasePlayer();
 
             if (mFullScreenDialog != null) {
@@ -585,9 +516,4 @@ public class StepDetailsFragment extends Fragment {
         outState.putBoolean(PLAYER_IN_FULL_SCREEN_STATE_KEY, mPlayerInFullScreen);
         outState.putBoolean(PLAYER_IN_PAUSE_STATE_KEY, mPlayerInPause);
     }
-
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//    }
 }

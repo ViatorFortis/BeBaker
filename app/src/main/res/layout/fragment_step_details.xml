@@ -24,7 +24,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1" >
 
-                <!--<com.google.android.exoplayer2.ui.PlayerView-->
                 <com.google.android.exoplayer2.ui.SimpleExoPlayerView
                     android:id="@+id/pv_step_video"
                     android:layout_width="match_parent"
@@ -32,12 +31,6 @@
                     android:gravity="center" />
 
             </FrameLayout>
-
-            <!--<com.google.android.exoplayer2.ui.PlayerView-->
-                <!--android:id="@+id/pv_step_video"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_weight="1" />-->
 
             <FrameLayout android:id="@+id/fl_step_image_container"
                 android:layout_width="0dp"
@@ -56,16 +49,6 @@
             </FrameLayout>
 
         </LinearLayout>
-
-        <!--<FrameLayout-->
-        <!--android:id="@+id/player_container"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="240dp"-->
-        <!--android:scaleType="centerInside" >-->
-        <!--<com.google.android.exoplayer2.ui.PlayerView android:id="@+id/pv_step_video"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"/>-->
-        <!--</FrameLayout>-->
 
         <TextView
             android:id="@+id/tv_step_description"

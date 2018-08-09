@@ -24,8 +24,6 @@ public class StepListFragment extends Fragment {
 
     private boolean mHighlighCurrentStep;
 
-    //private RecipeDetailAdapter.OnIngredientListClickListener mActivity;
-
     private Context mContext;
 
     private RecipeDetailAdapter mRecipeDetailAdapter;
@@ -48,21 +46,10 @@ public class StepListFragment extends Fragment {
         if ( !(context instanceof RecipeDetailAdapter.OnIngredientListClickListener) ) {
             throw new ClassCastException("Context must implement RecipeDetailAdapter.OnIngredientListClickListener");
         }
-//        try {
-//            //mActivity = (RecipeDetailAdapter.OnIngredientListClickListener) context;
-//            RecipeDetailAdapter.OnIngredientListClickListener ingredientListCallBack = (RecipeDetailAdapter.OnIngredientListClickListener) context;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(context.toString() + " must implement RecipeDetailAdapter.OnIngredientListClickListener");
-//        }
 
         if (!(context instanceof RecipeDetailAdapter.OnStepClickListener)) {
             throw new ClassCastException("Context must implement RecipeDetailAdapter.OnIngredientListClickListener");
         }
-//        try {
-//            RecipeDetailAdapter.OnStepClickListener stepCallBack = (RecipeDetailAdapter.OnStepClickListener) context;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(context.toString() + " must implement RecipeDetailAdapter.OnIngredientListClickListener");
-//        }
 
         mContext = context;
     }
@@ -72,7 +59,6 @@ public class StepListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_step_list, container, false);
 
-        //( (TextView) rootView.findViewById(R.id.tv_recipe_name) ).setText(mRecipe.getName() );
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_step_list);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext() );
@@ -96,10 +82,7 @@ public class StepListFragment extends Fragment {
             mRecipeDetailAdapter = new RecipeDetailAdapter(stepList, mContext, mHighlighCurrentStep, currentStepNumber);
         }
 
-        //mRecipeDetailAdapter = new RecipeDetailAdapter(stepList, mContext, mHighlighCurrentStep, 0);
         recyclerView.setAdapter(mRecipeDetailAdapter);
-
-        //recipeDetailAdapter.notifyDataSetChanged();
 
         return rootView;
     }

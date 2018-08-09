@@ -92,36 +92,12 @@ public class StepListActivity extends AppCompatActivity
     public void onStepClick(int stepId/*, View view*/) {
 
         if (mTabletMode) {
-
-            //CardView cardView = view.findViewById(R.id.cv_step_list);
-
-            /*
-            ShapeDrawable redBorderDrawable = new ShapeDrawable();
-            redBorderDrawable.setShape(new RectShape() );
-            redBorderDrawable.getPaint().setColor(getResources().getColor(R.color.colorPrimaryDark) );
-            redBorderDrawable.getPaint().setStrokeWidth(10f);
-            redBorderDrawable.getPaint().setStyle(Paint.Style.STROKE);
-
-            TextView textView = view.findViewById(R.id.tv_step_short_description);
-            textView.setBackground(redBorderDrawable);
-            */
-
-
-            // USE THIS TO HIGHLIGHT CURRENT STEP
-//            view.setBackgroundResource(R.color.colorPrimaryDark);
-//            TextView textView = view.findViewById(R.id.tv_step_short_description);
-//            textView.setTextColor(Color.WHITE);
-
-
             StepDetailsFragment stepDetailsFragment = new StepDetailsFragment();
             stepDetailsFragment.setStep(mRecipe.getStepList(), stepId, false);
 
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-
                     .replace(R.id.step_details_container, stepDetailsFragment)
-
-                    //.addToBackStack(null)
                     .commit();
         } else {
             Intent intent = new Intent(this, StepDetailsActivity.class);
@@ -132,24 +108,6 @@ public class StepListActivity extends AppCompatActivity
             intent.putExtra(getString(R.string.step_id_key), stepId);
 
             startActivity(intent);
-
-//        Intent intent = new Intent(this, StepDetailsActivity.class);
-//
-//        List<Step> stepList = mRecipe.getStepList();
-//
-//        Step step = stepList.get(stepId);
-//        intent.putExtra(getString(R.string.selected_step_key), step);
-//
-//        Step prevStep = (stepId  == 0) ? null : stepList.get(stepId - 1);
-//        intent.putExtra(getString(R.string.previous_step_key), prevStep);
-//
-//        Step nextStep = (stepId  == (stepList.size() - 1) ) ? null : stepList.get(stepId + 1);
-//        intent.putExtra(getString(R.string.next_step_key), nextStep);
-//
-//        startActivity(intent);
-
-//        String stepShortDescription = mRecipe.getStepList().get(stepId).getShortDescription();
-//        Toast.makeText(this, stepShortDescription, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -158,6 +116,5 @@ public class StepListActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
 
         outState.putString(getString(R.string.recipe_name_key), mRecipe.getName() );
-        //outState.putBoolean("tabletMode", mTabletMode);
     }
 }
