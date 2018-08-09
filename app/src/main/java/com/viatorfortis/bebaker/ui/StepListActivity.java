@@ -106,6 +106,7 @@ public class StepListActivity extends AppCompatActivity
 
             intent.putParcelableArrayListExtra(getString(R.string.step_list_parcel_key), stepList);
             intent.putExtra(getString(R.string.step_id_key), stepId);
+            intent.putExtra(getString(R.string.recipe_name_key), mRecipe.getName() );
 
             startActivity(intent);
         }

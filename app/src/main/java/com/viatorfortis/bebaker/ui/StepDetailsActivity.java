@@ -19,7 +19,6 @@ public class StepDetailsActivity extends AppCompatActivity {
 
     private int mStepId;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +28,10 @@ public class StepDetailsActivity extends AppCompatActivity {
         setSupportActionBar(appBar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        final Bundle extraBundle = getIntent().getExtras();
+        final String recipeName = extraBundle.getString(getString(R.string.recipe_name_key), getString(R.string.no_name_recipe));
+        setTitle(recipeName);
 
         try {
             mStepList = getIntent().getParcelableArrayListExtra(getString(R.string.step_list_parcel_key) );

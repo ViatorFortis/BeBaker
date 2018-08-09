@@ -48,4 +48,5 @@
     <string name="navigation_layout_visibility_bundle_value">navLayoutVisibility</string>
     <string name="current_step_number">currentStepNumber</string>
     <string name="highlight_current_step">highlightCurrentStep</string>
+    <string name="no_name_recipe">No name recipe</string>
 </resources>
